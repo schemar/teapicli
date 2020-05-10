@@ -1,0 +1,35 @@
+{
+  "name": "apitecli",
+  "version": "0.1.0",
+  "description": "A terminal client to manage web requests",
+  "main": "./dist/app.js",
+  "bin": {
+    "apitecli": "./dist/app.js"
+  },
+  "repository": "git@github.com:schemar/apitecli.git",
+  "author": "Martin Schenck <martin.schenck@futurice.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn tsc && node ./dist/app.js",
+    "lint": "yarn eslint --config .eslintrc.js --ext ts './src/**'",
+    "fix": "yarn lint --fix",
+    "build": "rm -r ./dist && yarn tsc"
+  },
+  "devDependencies": {
+    "@arkweid/lefthook": "^0.7.1",
+    "@types/node": "^13.13.5",
+    "@types/pubsub-js": "^1.8.0",
+    "@types/terminal-kit": "^1.28.2",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "commander": "^5.1.0",
+    "pubsub-js": "^1.8.0",
+    "terminal-kit": "^1.35.2"
+  }
+}
