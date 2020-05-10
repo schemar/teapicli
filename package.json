@@ -10,13 +10,14 @@
   "author": "Martin Schenck <martin.schenck@futurice.com>",
   "license": "MIT",
   "scripts": {
-    "start": "yarn tsc && node ./dist/app.js",
+    "start": "yarn tsc && node ./dist/app.js --config ./config.json",
     "lint": "yarn eslint --config .eslintrc.js --ext ts './src/**'",
     "fix": "yarn lint --fix",
     "build": "rm -r ./dist && yarn tsc"
   },
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.1",
+    "@types/convict": "^5.2.0",
     "@types/node": "^13.13.5",
     "@types/pubsub-js": "^1.8.0",
     "@types/terminal-kit": "^1.28.2",
@@ -29,6 +30,7 @@
   },
   "dependencies": {
     "commander": "^5.1.0",
+    "convict": "^6.0.0",
     "pubsub-js": "^1.8.0",
     "terminal-kit": "^1.35.2"
   }
