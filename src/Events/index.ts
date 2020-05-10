@@ -1,28 +1,29 @@
 import PubSub from 'pubsub-js';
+import Collection from '../Collections/Collection';
 
 export type Token = string;
 
 export enum Topic {
+  NewCollection = 'NEW_COLLECTION',
   Error = 'ERROR',
 }
-
-export type Data<T extends Topic> =
-  T extends Topic.Error? { message: string }
-  : { message: string };
 
 export class Events {
   public static subscribe(
     topic: Topic,
-    subscriber: (subTopic: typeof topic, data: Data<typeof topic>) => void,
+    subscriber: (data: any) => void,
   ): Token {
-    return PubSub.subscribe(topic, subscriber);
+    return PubSub.subscribe(
+      topic,
+      (_: Topic, received: any) => { subscriber(received); },
+    );
   }
 
   public static unsubscribe(token: Token): void {
     PubSub.unsubscribe(token);
   }
 
-  public static publish(topic: Topic, data: Data<typeof topic>): void {
+  public static publish(topic: Topic, data: any): void {
     PubSub.publish(topic, data);
   }
 }

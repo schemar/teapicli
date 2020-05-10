@@ -1,6 +1,6 @@
 import { ScreenBuffer } from 'terminal-kit';
 import Color from '../Color';
-import { Data, Events, Topic } from '../../Events';
+import { Events, Topic } from '../../Events';
 import Panel from './Panel';
 
 export default class StatusLinePanel implements Panel {
@@ -16,7 +16,7 @@ export default class StatusLinePanel implements Panel {
     this.parent = parent;
     this.init();
 
-    Events.subscribe(Topic.Error, (_: Topic, data: Data<Topic.Error>) => {
+    Events.subscribe(Topic.Error, (data: any) => {
       this.buffer.put(
         {
           x: 0,
@@ -27,6 +27,20 @@ export default class StatusLinePanel implements Panel {
           dy: 0,
         },
         data.message,
+      );
+      this.update();
+    });
+    Events.subscribe(Topic.NewCollection, (data: any) => {
+      this.buffer.put(
+        {
+          x: 0,
+          y: 0,
+          attr: { bgColor: Color.BakcgroundLight, defaultColor: true },
+          wrap: false,
+          dx: 1,
+          dy: 0,
+        },
+        data.collection.name,
       );
       this.update();
     });

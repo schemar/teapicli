@@ -3,18 +3,18 @@ import convict from 'convict';
 export default class Configuration {
   private configuration: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-  constructor(configFile: string) {
+  constructor(options: {configFile: string}) {
     this.configuration = convict({
       keys: {
         quit: {
-          doc: 'key to quit the application',
+          doc: 'quit the application',
           format: String,
           default: 'q',
         },
       },
     });
 
-    this.configuration.loadFile(configFile);
+    this.configuration.loadFile(options.configFile);
     this.configuration.validate({ allowed: 'strict' });
   }
 
