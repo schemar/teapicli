@@ -1,0 +1,27 @@
+{
+  "name": "default collection",
+  "environments": {
+    "local": {
+      "var1": "1",
+      "var2": "2"
+    },
+    "remote": {
+      "var1": "3",
+      "var2": "4"
+    }
+  },
+  "requests": {
+    "get_google": {
+      "method": "get",
+      "url": "https://www.google.com",
+      "headers": {},
+      "body": ""
+    },
+    "post_echo": {
+      "method": "post",
+      "url": "https://postman-echo.com/post",
+      "headers": {},
+      "body": "echo this please: {{var1}}"
+    }
+  }
+}

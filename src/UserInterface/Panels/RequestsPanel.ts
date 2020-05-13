@@ -1,6 +1,8 @@
 import { ScreenBuffer } from 'terminal-kit';
+import { Events, Topic } from '../../Events';
 import Color from '../Color';
 import Panel from './Panel';
+import { Collection, Request } from '../../Collections';
 
 export default class RequestsPanel implements Panel {
   private width!: number;
@@ -13,6 +15,8 @@ export default class RequestsPanel implements Panel {
 
   public constructor(parent: Panel) {
     this.parent = parent;
+
+    Events.subscribe(Topic.NewCollection, this.newCollection.bind(this));
 
     this.init();
   }
@@ -44,7 +48,39 @@ export default class RequestsPanel implements Panel {
     this.buffer.fill({
       attr: { bgDefaultColor: true },
     });
+    this.buffer.put({
+      x: 0,
+      y: 0,
+      dx: 1,
+      dy: 0,
+      wrap: false,
+      attr: { bgDefaultColor: true, defaultColor: true },
+    },
+    'Requests:');
+
     this.drawBorder();
+  }
+
+  public update(): void {
+    this.buffer.draw({ delta: true });
+    this.parent.update();
+  }
+
+  private newCollection({ collection }: {collection: Collection.default}): void {
+    let y = 1;
+    collection.requests.forEach((request: Request.default) => {
+      this.buffer.put({
+        x: 0,
+        y,
+        dx: 1,
+        dy: 0,
+        wrap: false,
+        attr: { bgDefaultColor: true, defaultColor: true },
+      },
+      request.name);
+      y += 1;
+    });
+    this.update();
   }
 
   private drawBorder(): void {
@@ -61,10 +97,5 @@ export default class RequestsPanel implements Panel {
     );
 
     this.update();
-  }
-
-  public update(): void {
-    this.buffer.draw({ delta: true });
-    this.parent.update();
   }
 }

@@ -36,5 +36,5 @@ terminal.start();
 
 Collections.load({
   filePath: program.collection,
-  importer: program.importer,
+  importerName: program.importer,
 });

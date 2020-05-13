@@ -30,20 +30,6 @@ export default class StatusLinePanel implements Panel {
       );
       this.update();
     });
-    Events.subscribe(Topic.NewCollection, (data: any) => {
-      this.buffer.put(
-        {
-          x: 0,
-          y: 0,
-          attr: { bgColor: Color.BakcgroundLight, defaultColor: true },
-          wrap: false,
-          dx: 1,
-          dy: 0,
-        },
-        data.collection.name,
-      );
-      this.update();
-    });
   }
 
   public getWidth(): number {

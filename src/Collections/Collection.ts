@@ -1,22 +1,22 @@
 import Environment from './Environment';
-import Endpoint from './Endpoint';
+import Request from './Request';
 
 export default class Collection {
   public readonly name: string;
 
   public readonly environments: Environment[];
 
-  public readonly endpoints: Endpoint[];
+  public readonly requests: Request[];
 
   public constructor(
     collection: {
       name: string;
       environments: Environment[];
-      endpoints: Endpoint[];
+      requests: Request[];
     },
   ) {
     this.name = collection.name;
     this.environments = collection.environments;
-    this.endpoints = collection.endpoints;
+    this.requests = collection.requests;
   }
 }

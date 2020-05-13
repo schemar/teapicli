@@ -10,7 +10,7 @@
   "author": "Martin Schenck <martin.schenck@futurice.com>",
   "license": "MIT",
   "scripts": {
-    "start": "yarn tsc && node ./dist/app.js --config ./config.json",
+    "start": "yarn tsc && node ./dist/app.js --config ./config.json --collection ./collection.json",
     "lint": "yarn eslint --config .eslintrc.js --ext ts './src/**'",
     "fix": "yarn lint --fix",
     "build": "rm -r ./dist && yarn tsc"

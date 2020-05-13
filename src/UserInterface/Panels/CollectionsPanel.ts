@@ -1,6 +1,8 @@
 import { ScreenBuffer } from 'terminal-kit';
+import { Events, Topic } from '../../Events';
 import Color from '../Color';
 import Panel from './Panel';
+import { Collection } from '../../Collections';
 
 export default class CollectionsPanel implements Panel {
   private width!: number;
@@ -13,6 +15,8 @@ export default class CollectionsPanel implements Panel {
 
   public constructor(parent: Panel) {
     this.parent = parent;
+
+    Events.subscribe(Topic.NewCollection, this.newCollection.bind(this));
 
     this.init();
   }
@@ -43,7 +47,34 @@ export default class CollectionsPanel implements Panel {
     this.buffer.fill({
       attr: { bgDefaultColor: true },
     });
+    this.buffer.put({
+      x: 0,
+      y: 0,
+      dx: 1,
+      dy: 0,
+      wrap: false,
+      attr: { bgDefaultColor: true, defaultColor: true },
+    },
+    'Collection:');
     this.drawBorder();
+  }
+
+  public update(): void {
+    this.buffer.draw({ delta: true });
+    this.parent.update();
+  }
+
+  private newCollection({ collection }: {collection: Collection.default}): void {
+    this.buffer.put({
+      x: 0,
+      y: 1,
+      dx: 1,
+      dy: 0,
+      wrap: false,
+      attr: { bgDefaultColor: true, defaultColor: true },
+    },
+    collection.name);
+    this.update();
   }
 
   private drawBorder(): void {
@@ -70,10 +101,5 @@ export default class CollectionsPanel implements Panel {
       '|||',
     );
     this.update();
-  }
-
-  public update(): void {
-    this.buffer.draw({ delta: true });
-    this.parent.update();
   }
 }
