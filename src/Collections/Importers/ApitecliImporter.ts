@@ -1,15 +1,15 @@
-import fs from 'fs';
-import Collection from '../Collection';
-import Environment from '../Environment';
-import Request from '../Request';
-import Importer from '../Importer';
+import fs from "fs";
+import Collection from "../Collection";
+import Environment from "../Environment";
+import Request from "../Request";
+import Importer from "../Importer";
 
 // File uses non-static methods to implement an interface:
 /* eslint-disable class-methods-use-this */
 
 export default class ApitecliImporter implements Importer {
   public import(filePath: string): Collection {
-    const inputFile = fs.readFileSync(filePath, { encoding: 'utf8' });
+    const inputFile = fs.readFileSync(filePath, { encoding: "utf8" });
     const input = JSON.parse(inputFile);
 
     const collection = new Collection({
@@ -25,9 +25,7 @@ export default class ApitecliImporter implements Importer {
     const environments: Environment[] = [];
 
     Object.keys(input.environments).forEach((name: string) => {
-      environments.push(
-        new Environment({ name }),
-      );
+      environments.push(new Environment({ name }));
     });
 
     return environments;
@@ -45,7 +43,7 @@ export default class ApitecliImporter implements Importer {
           url: request.url,
           headers: request.headers,
           body: request.body,
-        }),
+        })
       );
     });
 

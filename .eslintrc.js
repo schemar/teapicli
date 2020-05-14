@@ -4,9 +4,12 @@ module.exports = {
     node: true,
   },
   extends: [
-    'eslint:recommended',
+    'react-app',
     'airbnb-base',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:import/typescript',
+    'plugin:jest/recommended',
+    'plugin:jest/style',
+    'plugin:prettier/recommended',
   ],
   globals: {
     Atomics: 'readonly',
@@ -17,24 +20,25 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: [
-    '@typescript-eslint',
-  ],
+  plugins: ['@typescript-eslint', 'prettier', 'jest'],
   rules: {
-    "import/extensions": [
-      "error",
-      "ignorePackages",
+    'import/export': 'off',
+    'import/extensions': [
+      'error',
+      'ignorePackages',
       {
-        "ts": "never"
-      }
-    ]
+        'ts': 'never',
+        'tsx': 'never',
+      },
+    ],
   },
   settings: {
-    "import/resolver": {
-      "node": {
-          "paths": ["src"],
-          "extensions": [".ts"]
-      }
-    }
-  }
+    'import/resolver': {
+      typescript: { alwaysTryTypes: true },
+      node: {
+        paths: ["src"],
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
+  },
 };

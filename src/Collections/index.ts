@@ -1,27 +1,28 @@
-import { Events, Topic } from '../Events';
-import Collection from './Collection';
-import Importer from './Importer';
-import ApitecliImporter from './Importers/ApitecliImporter';
+import Collection from "./Collection";
+import Importer from "./Importer";
+import ApitecliImporter from "./Importers/ApitecliImporter";
 
-export * as Collection from './Collection';
-export * as Environment from './Environment';
-export * as Request from './Request';
+export * as Collection from "./Collection";
+export * as Environment from "./Environment";
+export * as Request from "./Request";
 
 export default class Collections {
-  public static load(
-    { filePath, importerName }: {filePath: string; importerName: string},
-  ): Collection {
+  public static load({
+    filePath,
+    importerName,
+  }: {
+    filePath: string;
+    importerName: string;
+  }): Collection {
     const importer: Importer = this.getImporter(importerName);
     const collection = importer.import(filePath);
-
-    Events.publish(Topic.NewCollection, { collection });
 
     return collection;
   }
 
   private static getImporter(importer: string): Importer {
     switch (importer) {
-      case 'apitecli':
+      case "apitecli":
         return new ApitecliImporter();
       default:
         throw new Error(`Unknown importer, cannot continue: ${importer}`);
