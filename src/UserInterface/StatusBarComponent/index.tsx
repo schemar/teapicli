@@ -7,9 +7,7 @@ const StatusBarComponent: FunctionComponent<{ width: number }> = ({
   return (
     <Box height={1} width={width}>
       <Box textWrap="truncate-end">
-        <Color bgBlackBright={true}>
-          :write{" ".repeat(width - ":write".length)}
-        </Color>
+        <Color bgBlackBright={true}>{" ".repeat(width)}</Color>
       </Box>
     </Box>
   );

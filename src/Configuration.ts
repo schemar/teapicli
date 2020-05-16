@@ -11,6 +11,11 @@ export default class Configuration {
           format: String,
           default: "q",
         },
+        send: {
+          doc: "send the selected request",
+          format: String,
+          default: "s",
+        },
       },
     });
 

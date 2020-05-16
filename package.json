@@ -18,9 +18,11 @@
     "watch": "watch 'yarn start' ./src"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "chalk": "^4.0.0",
     "commander": "^5.1.0",
     "convict": "^6.0.0",
+    "http-status-codes": "^1.4.0",
     "import-jsx": "^4.0.0",
     "ink": "^2.7.1",
     "ink-box": "^1.0.0",

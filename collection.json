@@ -15,7 +15,7 @@
       "method": "get",
       "url": "https://www.google.com",
       "headers": {
-        "accept": "plain/text",
+        "accept": "text/plain",
         "x-random": "stuff"
       },
       "body": ""

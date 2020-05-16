@@ -20,6 +20,7 @@ program
     "a collection to load at start",
     "~/.config/apitecli/collections/default.json"
   )
+  .option("-t, --client <type>", "the client to use for HTTP requests", "axios")
   .option(
     "-i, --importer <type>",
     "the importer to read the collection format",

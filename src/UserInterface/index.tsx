@@ -8,9 +8,11 @@ import RequestsComponent from "./RequestsComponent";
 import SelectedRequestComponent from "./SelectedRequestComponent";
 import ResponseComponent from "./ResponseComponent";
 import StatusBarComponent from "./StatusBarComponent";
+import Clients from "../Clients";
 import Collections from "../Collections";
 import Collection from "../Collections/Collection";
 import Request from "../Collections/Request";
+import Response from "../Response";
 
 const UserInterface: FunctionComponent<{
   program: any;
@@ -18,14 +20,10 @@ const UserInterface: FunctionComponent<{
 }> = ({ program, configuration }) => {
   const { exit } = useApp();
   const [columns, rows] = useStdoutDimensions();
-  useInput((input) => {
-    if (input === configuration.get("keys.quit")) {
-      exit();
-    }
-  });
 
   const [collection, setCollection] = useState<Collection>();
   const [selectedRequest, setSelectedRequest] = useState<Request>();
+  const [lastResponse, setLastResponse] = useState<Response>();
 
   useEffect(() => {
     const newCollection = Collections.load({
@@ -37,6 +35,16 @@ const UserInterface: FunctionComponent<{
       setSelectedRequest(newCollection.requests[0]);
     }
   }, [program.collection, program.importer]);
+
+  useInput((input) => {
+    if (input === configuration.get("keys.quit")) {
+      exit();
+    } else if (input === configuration.get("keys.send")) {
+      if (selectedRequest instanceof Request) {
+        Clients.send(program.client, selectedRequest).then(setLastResponse);
+      }
+    }
+  });
 
   return (
     <Box width={columns} height={rows - 1} flexDirection="column">
@@ -53,7 +61,7 @@ const UserInterface: FunctionComponent<{
             <SelectedRequestComponent request={selectedRequest} />
           </Box>
           <Box flexGrow={1}>
-            <ResponseComponent />
+            <ResponseComponent response={lastResponse} />
           </Box>
         </Box>
       </Box>
