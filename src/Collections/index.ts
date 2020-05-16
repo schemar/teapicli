@@ -2,10 +2,6 @@ import Collection from "./Collection";
 import Importer from "./Importer";
 import ApitecliImporter from "./Importers/ApitecliImporter";
 
-export * as Collection from "./Collection";
-export * as Environment from "./Environment";
-export * as Request from "./Request";
-
 export default class Collections {
   public static load({
     filePath,
