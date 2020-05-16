@@ -5,6 +5,7 @@ import Request from "../../Collections/Request";
 const SelectedRequestComponent: FunctionComponent<{ request?: Request }> = ({
   request,
 }) => {
+  const bodyLines: string[] | undefined = request?.body.split("\n");
   return (
     <Box padding={1} flexDirection="column">
       <Box>
@@ -34,8 +35,8 @@ const SelectedRequestComponent: FunctionComponent<{ request?: Request }> = ({
       <Box>
         <Color green>Body:</Color>
       </Box>
-      {request &&
-        request.body.split("\n").map((line) => {
+      {bodyLines &&
+        bodyLines.slice(0, 6).map((line) => {
           return (
             <Box paddingLeft={2} textWrap="truncate-end">
               {line}

@@ -38,7 +38,7 @@ const ResponseComponent: FunctionComponent<{ response?: Response }> = ({
         <Color green>Body:</Color>
       </Box>
       {bodyLines &&
-        bodyLines.slice(0, 8).map((line) => {
+        bodyLines.slice(0, 6).map((line) => {
           return (
             <Box paddingLeft={2} textWrap="truncate-end">
               {line}
