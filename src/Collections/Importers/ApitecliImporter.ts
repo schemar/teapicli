@@ -39,10 +39,7 @@ export default class ApitecliImporter implements Importer {
       requests.push(
         new Request({
           name,
-          method: request.method,
-          url: request.url,
-          headers: request.headers,
-          body: request.body,
+          ...request,
         })
       );
     });

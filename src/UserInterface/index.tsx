@@ -1,7 +1,13 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { Box, Color, useApp, useInput } from "ink";
+import { Box, useApp, useInput } from "ink";
 import useStdoutDimensions from "ink-use-stdout-dimensions";
 import Configuration from "../Configuration";
+import CollectionComponent from "./CollectionComponent";
+import EnvironmentsComponent from "./EnvironmentsComponent";
+import RequestsComponent from "./RequestsComponent";
+import CurrentRequestComponent from "./CurrentRequestComponent";
+import ResponseComponent from "./ResponseComponent";
+import StatusBarComponent from "./StatusBarComponent";
 import Collections from "../Collections";
 import Collection from "../Collections/Collection";
 
@@ -32,41 +38,22 @@ const UserInterface: FunctionComponent<{
     <Box width={columns} height={rows - 1} flexDirection="column">
       <Box flexGrow={1}>
         <Box width="45%" flexDirection="column">
-          <Box flexDirection="column" padding={1} width="100%">
-            <Box>Collection:</Box>
-            <Box>{collection?.name}</Box>
-          </Box>
+          <CollectionComponent name={collection?.name} />
           <Box flexDirection="row" width="100%">
-            <Box flexDirection="column" padding={1} width="50%">
-              <Box>Environments:</Box>
-              {collection?.environments.map((environment) => {
-                return <Box>{environment.name}</Box>;
-              })}
-            </Box>
-            <Box flexDirection="column" padding={1} width="50%">
-              <Box>Requests:</Box>
-              {collection?.requests.map((request) => {
-                return <Box>{request.name}</Box>;
-              })}
-            </Box>
+            <EnvironmentsComponent environments={collection?.environments} />
+            <RequestsComponent requests={collection?.requests} />
           </Box>
         </Box>
         <Box flexGrow={1} flexDirection="column">
-          <Box height="50%" padding={1}>
-            Request:
+          <Box height="50%">
+            <CurrentRequestComponent />
           </Box>
-          <Box flexGrow={1} padding={1}>
-            Response:
+          <Box flexGrow={1}>
+            <ResponseComponent />
           </Box>
         </Box>
       </Box>
-      <Box height={1} width={columns}>
-        <Box textWrap="truncate-end">
-          <Color bgBlackBright={true}>
-            :write{" ".repeat(columns - ":write".length)}
-          </Color>
-        </Box>
-      </Box>
+      <StatusBarComponent width={columns} />
     </Box>
   );
 };
