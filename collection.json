@@ -14,14 +14,17 @@
     "get_google": {
       "method": "get",
       "url": "https://www.google.com",
-      "headers": {},
+      "headers": {
+        "accept": "plain/text",
+        "x-random": "stuff"
+      },
       "body": ""
     },
     "post_echo": {
       "method": "post",
       "url": "https://postman-echo.com/post",
       "headers": {},
-      "body": "echo this please: {{var1}}"
+      "body": "echo this please: {{var1}}\nAaaand lorem ipsum:\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non est tincidunt, finibus arcu sed, convallis elit. Donec et ex at ex efficitur consequat. Nam in ligula eget neque molestie feugiat. Fusce nec nunc posuere, imperdiet justo quis, rhoncus nulla. In dictum facilisis libero eu vehicula. Cras lacinia dui diam, in rhoncus turpis venenatis sit amet. In hac habitasse platea dictumst. Pellentesque volutpat sem at sapien euismod, vel sollicitudin mauris tristique. Nulla quis pellentesque massa. Sed faucibus diam augue, non ullamcorper lorem vulputate eget. Proin lacinia est dignissim tortor tristique, vel venenatis orci condimentum."
     }
   }
 }

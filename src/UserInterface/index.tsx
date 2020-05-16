@@ -5,11 +5,12 @@ import Configuration from "../Configuration";
 import CollectionComponent from "./CollectionComponent";
 import EnvironmentsComponent from "./EnvironmentsComponent";
 import RequestsComponent from "./RequestsComponent";
-import CurrentRequestComponent from "./CurrentRequestComponent";
+import SelectedRequestComponent from "./SelectedRequestComponent";
 import ResponseComponent from "./ResponseComponent";
 import StatusBarComponent from "./StatusBarComponent";
 import Collections from "../Collections";
 import Collection from "../Collections/Collection";
+import Request from "../Collections/Request";
 
 const UserInterface: FunctionComponent<{
   program: any;
@@ -24,14 +25,17 @@ const UserInterface: FunctionComponent<{
   });
 
   const [collection, setCollection] = useState<Collection>();
+  const [selectedRequest, setSelectedRequest] = useState<Request>();
 
   useEffect(() => {
-    setCollection(
-      Collections.load({
-        filePath: program.collection,
-        importerName: program.importer,
-      })
-    );
+    const newCollection = Collections.load({
+      filePath: program.collection,
+      importerName: program.importer,
+    });
+    setCollection(newCollection);
+    if (newCollection.requests.length > 0) {
+      setSelectedRequest(newCollection.requests[0]);
+    }
   }, [program.collection, program.importer]);
 
   return (
@@ -46,7 +50,7 @@ const UserInterface: FunctionComponent<{
         </Box>
         <Box flexGrow={1} flexDirection="column">
           <Box height="50%">
-            <CurrentRequestComponent />
+            <SelectedRequestComponent request={selectedRequest} />
           </Box>
           <Box flexGrow={1}>
             <ResponseComponent />

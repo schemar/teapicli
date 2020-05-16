@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Box } from "ink";
+import { Box, Color } from "ink";
 import Environment from "../../Collections/Environment";
 
 const EnvironmentsComponent: FunctionComponent<{
@@ -7,7 +7,9 @@ const EnvironmentsComponent: FunctionComponent<{
 }> = ({ environments }) => {
   return (
     <Box flexDirection="column" padding={1} width="50%">
-      <Box>Environments:</Box>
+      <Box>
+        <Color green>Environments:</Color>
+      </Box>
       {environments?.map((environment) => {
         return <Box>{environment.name}</Box>;
       })}

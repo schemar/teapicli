@@ -14,7 +14,8 @@
     "start": "yarn tsc && node ./dist/app.js --config ./config.json --collection ./collection.json",
     "lint": "yarn eslint --config .eslintrc.js './src/**'",
     "fix": "yarn lint --fix",
-    "build": "rm -r ./dist && yarn tsc"
+    "build": "rm -r ./dist && yarn tsc",
+    "watch": "watch 'yarn start' ./src"
   },
   "dependencies": {
     "chalk": "^4.0.0",
@@ -51,6 +52,7 @@
     "eslint-plugin-react-hooks": "^2.0.0",
     "ink-testing-library": "^1.0.3",
     "prettier": "^2.0.5",
-    "typescript": "^3.9.2"
+    "typescript": "^3.9.2",
+    "watch": "^1.0.2"
   }
 }

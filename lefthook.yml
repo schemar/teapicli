@@ -2,5 +2,5 @@ pre-commit:
   parallel: false
   commands:
     eslint:
-      glob: "*.ts"
+      glob: "*.{ts,tsx}"
       run: yarn lint --fix {staged_files} && git add {staged_files}
