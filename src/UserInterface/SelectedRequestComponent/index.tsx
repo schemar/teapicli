@@ -8,7 +8,8 @@ const SelectedRequestComponent: FunctionComponent<{ request?: Request }> = ({
   return (
     <Box padding={1} flexDirection="column">
       <Box>
-        <Color green>Selected Request:</Color>
+        <Color green>Selected Request: </Color>
+        <Color blue>{request?.name}</Color>
       </Box>
       <Box>
         <Color green>Method: </Color>

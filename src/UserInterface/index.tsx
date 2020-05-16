@@ -12,6 +12,7 @@ import Clients from "../Clients";
 import Collections from "../Collections";
 import Collection from "../Collections/Collection";
 import Request from "../Collections/Request";
+import Environment from "../Collections/Environment";
 import Response from "../Response";
 
 const UserInterface: FunctionComponent<{
@@ -22,6 +23,7 @@ const UserInterface: FunctionComponent<{
   const [columns, rows] = useStdoutDimensions();
 
   const [collection, setCollection] = useState<Collection>();
+  const [selectedEnvironment, setSelectedEnvironment] = useState<Environment>();
   const [selectedRequest, setSelectedRequest] = useState<Request>();
   const [lastResponse, setLastResponse] = useState<Response>();
 
@@ -33,6 +35,9 @@ const UserInterface: FunctionComponent<{
     setCollection(newCollection);
     if (newCollection.requests.length > 0) {
       setSelectedRequest(newCollection.requests[0]);
+    }
+    if (newCollection.environments.length > 0) {
+      setSelectedEnvironment(newCollection.environments[0]);
     }
   }, [program.collection, program.importer]);
 
@@ -52,8 +57,14 @@ const UserInterface: FunctionComponent<{
         <Box width="45%" flexDirection="column">
           <CollectionComponent name={collection?.name} />
           <Box flexDirection="row" width="100%">
-            <EnvironmentsComponent environments={collection?.environments} />
-            <RequestsComponent requests={collection?.requests} />
+            <EnvironmentsComponent
+              environments={collection?.environments}
+              selectedEnvironment={selectedEnvironment}
+            />
+            <RequestsComponent
+              requests={collection?.requests}
+              selectedRequest={selectedRequest}
+            />
           </Box>
         </Box>
         <Box flexGrow={1} flexDirection="column">
