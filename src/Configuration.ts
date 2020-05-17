@@ -11,6 +11,21 @@ export default class Configuration {
           format: String,
           default: "q",
         },
+        close: {
+          doc: "closes a viewport, like a pager",
+          format: String,
+          default: "q",
+        },
+        down: {
+          doc: "scroll down, e.g. in a pager view",
+          format: String,
+          default: "j",
+        },
+        up: {
+          doc: "scroll up, e.g. in a pager view",
+          format: String,
+          default: "k",
+        },
         send: {
           doc: "send the selected request",
           format: String,
@@ -20,6 +35,11 @@ export default class Configuration {
           doc: "focus environment to select with j/k",
           format: String,
           default: "v",
+        },
+        showResponse: {
+          doc: "opens the pager and shows the entire response",
+          format: String,
+          default: "p",
         },
       },
     });

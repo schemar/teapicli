@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Box, useInput } from "ink";
+import { Box, useInput, useApp } from "ink";
 import Configuration from "../../Configuration";
 import CollectionComponent from "./CollectionComponent";
 import EnvironmentsComponent from "./EnvironmentsComponent";
@@ -29,8 +29,11 @@ const MainView: FunctionComponent<{
   lastResponse,
   setLastResponse,
 }) => {
+  const { exit } = useApp();
   useInput((input) => {
-    if (input === configuration.get("keys.send")) {
+    if (input === configuration.get("keys.quit")) {
+      exit();
+    } else if (input === configuration.get("keys.send")) {
       if (selectedRequest instanceof Request) {
         Clients.send(client, selectedRequest).then(setLastResponse);
       }
@@ -38,26 +41,26 @@ const MainView: FunctionComponent<{
   });
   return (
     <Box width="100%" height="100%">
-        <Box width={30} flexDirection="column">
-          <CollectionComponent name={collection?.name} />
-            <EnvironmentsComponent
-              environments={collection?.environments}
-              selectedEnvironment={selectedEnvironment}
-            />
-            <RequestsComponent
-              requests={collection?.requests}
-              selectedRequest={selectedRequest}
-            />
+      <Box width={30} flexDirection="column">
+        <CollectionComponent name={collection?.name} />
+        <EnvironmentsComponent
+          environments={collection?.environments}
+          selectedEnvironment={selectedEnvironment}
+        />
+        <RequestsComponent
+          requests={collection?.requests}
+          selectedRequest={selectedRequest}
+        />
+      </Box>
+      <Box flexGrow={1} flexDirection="column">
+        <Box height="50%">
+          <SelectedRequestComponent request={selectedRequest} />
         </Box>
-        <Box flexGrow={1} flexDirection="column">
-          <Box height="50%">
-            <SelectedRequestComponent request={selectedRequest} />
-          </Box>
-          <Box flexGrow={1}>
-            <ResponseComponent response={lastResponse} />
-          </Box>
+        <Box flexGrow={1}>
+          <ResponseComponent response={lastResponse} />
         </Box>
       </Box>
+    </Box>
   );
 };
 
