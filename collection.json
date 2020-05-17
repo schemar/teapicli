@@ -1,5 +1,5 @@
 {
-  "name": "default collection",
+  "name": "jsonplaceholder.typicode.com",
   "environments": {
     "local": {
       "var1": "1",
@@ -11,20 +11,21 @@
     }
   },
   "requests": {
-    "get_google": {
+    "get_post": {
       "method": "get",
-      "url": "https://www.google.com",
+      "url": "https://jsonplaceholder.typicode.com/posts/2",
       "headers": {
-        "accept": "text/plain",
-        "x-random": "stuff"
+        "accept": "application/json"
       },
       "body": ""
     },
-    "post_echo": {
-      "method": "post",
-      "url": "https://postman-echo.com/post",
-      "headers": {},
-      "body": "echo this please: {{var1}}\nAaaand lorem ipsum:\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non est tincidunt, finibus arcu sed, convallis elit. Donec et ex at ex efficitur consequat. Nam in ligula eget neque molestie feugiat. Fusce nec nunc posuere, imperdiet justo quis, rhoncus nulla. In dictum facilisis libero eu vehicula. Cras lacinia dui diam, in rhoncus turpis venenatis sit amet. In hac habitasse platea dictumst. Pellentesque volutpat sem at sapien euismod, vel sollicitudin mauris tristique. Nulla quis pellentesque massa. Sed faucibus diam augue, non ullamcorper lorem vulputate eget. Proin lacinia est dignissim tortor tristique, vel venenatis orci condimentum."
+    "get_all_posts": {
+      "method": "get",
+      "url": "https://jsonplaceholder.typicode.com/posts",
+      "headers": {
+        "accept": "application/json"
+      },
+      "body": ""
     }
   }
 }

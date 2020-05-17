@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { Box, useInput, useApp } from "ink";
 import Configuration from "../../Configuration";
 import CollectionComponent from "./CollectionComponent";
@@ -30,12 +30,19 @@ const MainView: FunctionComponent<{
   setLastResponse,
 }) => {
   const { exit } = useApp();
+
+  const [isLoading, setLoading] = useState<boolean>(false);
+
   useInput((input) => {
     if (input === configuration.get("keys.quit")) {
       exit();
     } else if (input === configuration.get("keys.send")) {
       if (selectedRequest instanceof Request) {
-        Clients.send(client, selectedRequest).then(setLastResponse);
+        setLoading(true);
+        Clients.send(client, selectedRequest).then((response) => {
+          setLoading(false);
+          setLastResponse(response);
+        });
       }
     }
   });
@@ -57,7 +64,7 @@ const MainView: FunctionComponent<{
           <SelectedRequestComponent request={selectedRequest} />
         </Box>
         <Box flexGrow={1}>
-          <ResponseComponent response={lastResponse} />
+          <ResponseComponent isLoading={isLoading} response={lastResponse} />
         </Box>
       </Box>
     </Box>
