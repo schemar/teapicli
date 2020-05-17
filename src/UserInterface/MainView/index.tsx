@@ -37,11 +37,9 @@ const MainView: FunctionComponent<{
     }
   });
   return (
-    <Box width="100%" height="100%" flexDirection="column">
-      <Box flexGrow={1}>
-        <Box width="45%" flexDirection="column">
+    <Box width="100%" height="100%">
+        <Box width={30} flexDirection="column">
           <CollectionComponent name={collection?.name} />
-          <Box flexDirection="row" width="100%">
             <EnvironmentsComponent
               environments={collection?.environments}
               selectedEnvironment={selectedEnvironment}
@@ -50,7 +48,6 @@ const MainView: FunctionComponent<{
               requests={collection?.requests}
               selectedRequest={selectedRequest}
             />
-          </Box>
         </Box>
         <Box flexGrow={1} flexDirection="column">
           <Box height="50%">
@@ -61,7 +58,6 @@ const MainView: FunctionComponent<{
           </Box>
         </Box>
       </Box>
-    </Box>
   );
 };
 
