@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Box, Color, useInput } from "ink";
 import Spinner from "ink-spinner";
 import { highlight } from "cli-highlight";
@@ -13,10 +13,23 @@ enum Tab {
 
 const ResponseComponent: FunctionComponent<{
   isLoading: boolean;
+  startTime?: [number, number];
   response?: Response;
   configuration: Configuration;
-}> = ({ isLoading, response, configuration }) => {
+}> = ({ isLoading, startTime, response, configuration }) => {
   const [activeTab, setActiveTab] = useState<Tab>(Tab.Body);
+  const [passedTime, setPassedTime] = useState<number>(0);
+
+  useEffect(() => {
+    const passedTimeInterval = setInterval(() => {
+      setPassedTime(process.hrtime(startTime)[0]);
+    }, 100) as any;
+
+    return () => {
+      clearInterval(passedTimeInterval);
+      setPassedTime(0);
+    };
+  }, [startTime]);
 
   useInput((input) => {
     if (input === configuration.get("keys.nextTab")) {
@@ -43,7 +56,7 @@ const ResponseComponent: FunctionComponent<{
         {isLoading && (
           <Color blue>
             {" "}
-            <Spinner type="dots" />
+            <Spinner type="dots" /> {passedTime}&nbsp;s
           </Color>
         )}
       </Box>

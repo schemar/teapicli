@@ -32,6 +32,7 @@ const MainView: FunctionComponent<{
   const { exit } = useApp();
 
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [startTime, setStartTime] = useState<[number, number]>();
 
   useInput((input) => {
     if (input === configuration.get("keys.quit")) {
@@ -39,6 +40,7 @@ const MainView: FunctionComponent<{
     } else if (input === configuration.get("keys.send")) {
       if (selectedRequest instanceof Request) {
         setLoading(true);
+        setStartTime(process.hrtime());
         Clients.send(client, selectedRequest).then((response) => {
           setLoading(false);
           setLastResponse(response);
@@ -66,6 +68,7 @@ const MainView: FunctionComponent<{
         <Box flexGrow={1}>
           <ResponseComponent
             isLoading={isLoading}
+            startTime={startTime}
             response={lastResponse}
             configuration={configuration}
           />
