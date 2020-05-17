@@ -64,7 +64,11 @@ const MainView: FunctionComponent<{
           <SelectedRequestComponent request={selectedRequest} />
         </Box>
         <Box flexGrow={1}>
-          <ResponseComponent isLoading={isLoading} response={lastResponse} />
+          <ResponseComponent
+            isLoading={isLoading}
+            response={lastResponse}
+            configuration={configuration}
+          />
         </Box>
       </Box>
     </Box>
