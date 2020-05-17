@@ -13,7 +13,11 @@ const RequestsComponent: FunctionComponent<{
       </Box>
       {requests?.map((request) => {
         if (request.name === selectedRequest?.name) {
-          return <Box textWrap="truncate-end"><Color blue>{request.name}</Color></Box>
+          return (
+            <Box textWrap="truncate-end">
+              <Color blue>{request.name}</Color>
+            </Box>
+          );
         }
         return <Box textWrap="truncate-end">{request.name}</Box>;
       })}

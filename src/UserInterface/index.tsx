@@ -2,18 +2,14 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { Box, useApp, useInput } from "ink";
 import useStdoutDimensions from "ink-use-stdout-dimensions";
 import Configuration from "../Configuration";
-import CollectionComponent from "./CollectionComponent";
-import EnvironmentsComponent from "./EnvironmentsComponent";
-import RequestsComponent from "./RequestsComponent";
-import SelectedRequestComponent from "./SelectedRequestComponent";
-import ResponseComponent from "./ResponseComponent";
-import StatusBarComponent from "./StatusBarComponent";
 import Clients from "../Clients";
 import Collections from "../Collections";
 import Collection from "../Collections/Collection";
-import Request from "../Collections/Request";
 import Environment from "../Collections/Environment";
+import Request from "../Collections/Request";
 import Response from "../Response";
+import StatusBarComponent from "./StatusBarComponent";
+import MainView from "./MainView";
 
 const UserInterface: FunctionComponent<{
   program: any;
@@ -50,32 +46,17 @@ const UserInterface: FunctionComponent<{
       }
     }
   });
-
   return (
     <Box width={columns} height={rows - 1} flexDirection="column">
-      <Box flexGrow={1}>
-        <Box width="45%" flexDirection="column">
-          <CollectionComponent name={collection?.name} />
-          <Box flexDirection="row" width="100%">
-            <EnvironmentsComponent
-              environments={collection?.environments}
-              selectedEnvironment={selectedEnvironment}
-            />
-            <RequestsComponent
-              requests={collection?.requests}
-              selectedRequest={selectedRequest}
-            />
-          </Box>
-        </Box>
-        <Box flexGrow={1} flexDirection="column">
-          <Box height="50%">
-            <SelectedRequestComponent request={selectedRequest} />
-          </Box>
-          <Box flexGrow={1}>
-            <ResponseComponent response={lastResponse} />
-          </Box>
-        </Box>
-      </Box>
+      <MainView
+        configuration={configuration}
+        client={program.client}
+        collection={collection}
+        selectedEnvironment={selectedEnvironment}
+        selectedRequest={selectedRequest}
+        lastResponse={lastResponse}
+        setLastResponse={setLastResponse}
+      />
       <StatusBarComponent width={columns} />
     </Box>
   );

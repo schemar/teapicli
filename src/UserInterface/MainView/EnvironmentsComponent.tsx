@@ -13,7 +13,11 @@ const EnvironmentsComponent: FunctionComponent<{
       </Box>
       {environments?.map((environment) => {
         if (environment.name === selectedEnvironment?.name) {
-          return <Box textWrap="truncate-end"><Color blue>{environment.name}</Color></Box>
+          return (
+            <Box textWrap="truncate-end">
+              <Color blue>{environment.name}</Color>
+            </Box>
+          );
         }
         return <Box textWrap="truncate-end">{environment.name}</Box>;
       })}

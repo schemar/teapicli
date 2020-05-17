@@ -16,6 +16,11 @@ export default class Configuration {
           format: String,
           default: "s",
         },
+        selectEnvironment: {
+          doc: "focus environment to select with j/k",
+          format: String,
+          default: "v",
+        },
       },
     });
 
