@@ -18,18 +18,26 @@ const ResponseComponent: FunctionComponent<{
   configuration: Configuration;
 }> = ({ isLoading, startTime, response, configuration }) => {
   const [activeTab, setActiveTab] = useState<Tab>(Tab.Body);
-  const [passedTime, setPassedTime] = useState<number>(0);
+  const [passedTime, setPassedTime] = useState<string>("");
 
   useEffect(() => {
-    const passedTimeInterval = setInterval(() => {
-      setPassedTime(process.hrtime(startTime)[0]);
-    }, 100) as any;
+    let passedTimeInterval: number | undefined;
+    if (isLoading) {
+      passedTimeInterval = setInterval(() => {
+        setPassedTime(
+          `${process.hrtime(startTime)[0]}s ${Math.round(
+            process.hrtime(startTime)[1] / 1000000
+          )}ms`
+        );
+      }, 10) as any;
+    }
 
     return () => {
-      clearInterval(passedTimeInterval);
-      setPassedTime(0);
+      if (passedTimeInterval !== undefined) {
+        clearInterval(passedTimeInterval);
+      }
     };
-  }, [startTime]);
+  }, [startTime, isLoading]);
 
   useInput((input) => {
     if (input === configuration.get("keys.nextTab")) {
@@ -53,12 +61,10 @@ const ResponseComponent: FunctionComponent<{
     <Box padding={1} flexDirection="column">
       <Box>
         <Color green>Last Response:</Color>
-        {isLoading && (
-          <Color blue>
-            {" "}
-            <Spinner type="dots" /> {passedTime}&nbsp;s
-          </Color>
-        )}
+        <Color blue>
+          {" "}
+          {isLoading ? <Spinner type="dots" /> : <> </>} {passedTime}
+        </Color>
       </Box>
       {response && (
         <>
@@ -83,7 +89,7 @@ const ResponseComponent: FunctionComponent<{
           </Box>
           {activeTab === Tab.Body &&
             bodyLines &&
-            bodyLines.slice(0, 6).map((line) => {
+            bodyLines.slice(0, 12).map((line) => {
               return (
                 <Box paddingLeft={2} textWrap="truncate-end">
                   {line}
