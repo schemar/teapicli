@@ -11,10 +11,12 @@ import Response from "../Response";
 import StatusBarComponent from "./StatusBarComponent";
 import MainView from "./MainView";
 import Pager from "./Pager";
+import Selector from "./Selector";
 
 enum ViewState {
   Main,
   ResponsePager,
+  RequestSelector,
 }
 
 const UserInterface: FunctionComponent<{
@@ -48,11 +50,24 @@ const UserInterface: FunctionComponent<{
       if (lastResponse !== undefined) {
         setViewState(ViewState.ResponsePager);
       }
+    } else if (input === configuration.get("keys.selectRequest")) {
+      if (collection?.requests && collection.requests.length > 1) {
+        setViewState(ViewState.RequestSelector);
+      }
     }
   });
 
   const onWindowClose = () => {
     setViewState(ViewState.Main);
+  };
+
+  const onRequestSelect = (name: string) => {
+    collection!.requests.forEach((request) => {
+      if (request.name === name) {
+        setSelectedRequest(request);
+      }
+    });
+    onWindowClose();
   };
 
   return (
@@ -75,6 +90,16 @@ const UserInterface: FunctionComponent<{
           onClose={onWindowClose}
           width={columns}
           height={rows - 2}
+        />
+      )}
+      {viewState === ViewState.RequestSelector && (
+        <Selector
+          configuration={configuration}
+          height={rows}
+          items={collection!.requests}
+          selectedItem={selectedRequest?.name}
+          onSelect={onRequestSelect}
+          onClose={onWindowClose}
         />
       )}
       <StatusBarComponent width={columns} />

@@ -26,7 +26,7 @@ const SelectedRequestComponent: FunctionComponent<{ request?: Request }> = ({
       {request &&
         Object.keys(request.headers).map((name) => {
           return (
-            <Box paddingLeft={2}>
+            <Box paddingLeft={2} textWrap="truncate-middle">
               <Color blue>{name}: </Color>
               {request.headers[name]}
             </Box>

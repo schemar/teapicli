@@ -1,5 +1,5 @@
 {
-  "name": "jsonplaceholder.typicode.com",
+  "name": "my amazing collection",
   "environments": {
     "local": {
       "var1": "1",
@@ -26,6 +26,14 @@
         "accept": "application/json"
       },
       "body": ""
+    },
+    "weird_super_looooooooong_request": {
+      "method": "post",
+      "url": "https://jsonplaceholder.typicode.com/posts",
+      "headers": {
+        "x-ashjfklahfklahklfdhalsfhasd": "askdhflakhdflkahlfkhalkfhalkfh"
+      },
+      "body": "dflkahsfdia ifhn  alifhlashfl afh ajhfkahf kahsfk ahf ajhf hivlua ieuhadsf "
     }
   }
 }

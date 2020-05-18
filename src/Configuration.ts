@@ -31,10 +31,20 @@ export default class Configuration {
           format: String,
           default: "k",
         },
+        select: {
+          doc: "select the item under cursor",
+          format: String,
+          default: "s",
+        },
         send: {
           doc: "send the selected request",
           format: String,
           default: "s",
+        },
+        selectRequest: {
+          doc: "select a different request to send",
+          format: String,
+          default: "r",
         },
         selectEnvironment: {
           doc: "focus environment to select with j/k",
