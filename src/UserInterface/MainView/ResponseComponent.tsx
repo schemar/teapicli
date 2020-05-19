@@ -19,6 +19,7 @@ const ResponseComponent: FunctionComponent<{
 }> = ({ isLoading, startTime, response, configuration }) => {
   const [activeTab, setActiveTab] = useState<Tab>(Tab.Body);
   const [passedTime, setPassedTime] = useState<string>("");
+  const [bodyLines, setBodyLines] = useState<string[]>([]);
 
   useEffect(() => {
     let passedTimeInterval: number | undefined;
@@ -39,6 +40,12 @@ const ResponseComponent: FunctionComponent<{
     };
   }, [startTime, isLoading]);
 
+  useEffect(() => {
+    if (response !== undefined) {
+      setBodyLines(highlight(response.body).split("\n"));
+    }
+  }, [response]);
+
   useInput((input) => {
     if (input === configuration.get("keys.nextTab")) {
       switch (activeTab) {
@@ -53,9 +60,6 @@ const ResponseComponent: FunctionComponent<{
       }
     }
   });
-
-  const bodyLines: string[] | undefined =
-    response && highlight(response.body).split("\n");
 
   return (
     <Box padding={1} flexDirection="column">
@@ -88,7 +92,6 @@ const ResponseComponent: FunctionComponent<{
             </Color>
           </Box>
           {activeTab === Tab.Body &&
-            bodyLines &&
             bodyLines.slice(0, 12).map((line) => {
               return (
                 <Box paddingLeft={2} textWrap="truncate-end">
@@ -96,7 +99,7 @@ const ResponseComponent: FunctionComponent<{
                 </Box>
               );
             })}
-          {bodyLines && bodyLines.length > 8 && <Box paddingLeft={2}>…</Box>}
+          {bodyLines.length > 8 && <Box paddingLeft={2}>…</Box>}
 
           {activeTab === Tab.Headers &&
             Object.keys(response.headers).map((name) => {

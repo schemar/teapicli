@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Box, useInput } from "ink";
 import { highlight } from "cli-highlight";
 import Configuration from "../Configuration";
@@ -10,25 +10,30 @@ const Pager: FunctionComponent<{
   content: string;
   onClose: () => void;
 }> = ({ configuration, width, height, content, onClose }) => {
-  const highlighted = highlight(content);
-  const lines = highlighted.split("\n");
+  const [lines, setLines] = useState<string[]>([]);
 
-  // Split wide lines into multiple lines
-  const reflow: string[] = [];
-  lines.forEach((line) => {
-    let currentIndex = 0;
-    while (currentIndex < line.length) {
-      reflow.push(line.slice(currentIndex, currentIndex + width));
-      currentIndex += width;
-    }
-  });
+  useEffect(() => {
+    const highlighted = highlight(content);
+    const highlightedLines = highlighted.split("\n");
+
+    // Split wide lines into multiple lines
+    const reflow: string[] = [];
+    highlightedLines.forEach((line) => {
+      let currentIndex = 0;
+      while (currentIndex < line.length) {
+        reflow.push(line.slice(currentIndex, currentIndex + width));
+        currentIndex += width;
+      }
+    });
+    setLines(reflow);
+  }, [content]);
 
   const [pointer, setPointer] = useState<number>(0);
   useInput((input) => {
     if (input === configuration.get("keys.close")) {
       onClose();
     } else if (input === configuration.get("keys.down")) {
-      setPointer(Math.min(reflow.length - 1, pointer + 1));
+      setPointer(Math.min(lines.length - 1, pointer + 1));
     } else if (input === configuration.get("keys.up")) {
       setPointer(Math.max(0, pointer - 1));
     }
@@ -36,7 +41,7 @@ const Pager: FunctionComponent<{
 
   return (
     <Box width="100%" height="100%" flexDirection="column">
-      {reflow.slice(pointer, pointer + height).map((line) => (
+      {lines.slice(pointer, pointer + height).map((line) => (
         <>{line}</>
       ))}
     </Box>
