@@ -7,7 +7,7 @@ import Importer from "../Importer";
 // File uses non-static methods to implement an interface:
 /* eslint-disable class-methods-use-this */
 
-export default class ApitecliImporter implements Importer {
+export default class TeapicliImporter implements Importer {
   public import(filePath: string): Collection {
     const inputFile = fs.readFileSync(filePath, { encoding: "utf8" });
     const input = JSON.parse(inputFile);

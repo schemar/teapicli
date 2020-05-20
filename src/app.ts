@@ -13,18 +13,18 @@ program
   .option(
     "-g, --config <file>",
     "alternative configuration file to use",
-    "~/.config/apitecli/config.json"
+    "~/.config/teapicli/config.json"
   )
   .option(
     "-c, --collection <file>",
     "a collection to load at start",
-    "~/.config/apitecli/collections/default.json"
+    "~/.config/teapicli/collections/default.json"
   )
   .option("-t, --client <type>", "the client to use for HTTP requests", "axios")
   .option(
     "-i, --importer <type>",
     "the importer to read the collection format",
-    "apitecli"
+    "teapicli"
   );
 
 program.parse(process.argv);

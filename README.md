@@ -1,8 +1,8 @@
-# apitecli
+# teapicli
 
 **Pre-alpha; not really usable**
 
-Apitecli is a terminal API client.
+Teapicli is a terminal API client.
 You can use it to make web requests and inspect responses.
 It allows you to store and group requests for faster access.
 
@@ -16,9 +16,9 @@ yarn start
 
 ## Usage
 
-If you start apitecli with `yarn start`, it will use the examples provided with this repo.
+If you start teapicli with `yarn start`, it will use the examples provided with this repo.
 You can check `./config.json` and, more importantly, `./collection.json`.
-The collection file defines the requests you will be able to make from within apitecli.
+The collection file defines the requests you will be able to make from within teapicli.
 
 Help output:
 
@@ -27,10 +27,10 @@ Usage: app [options]
 
 Options:
   -V, --version            output the version number
-  -g, --config <file>      alternative configuration file to use (default: "~/.config/apitecli/config.json")
-  -c, --collection <file>  a collection to load at start (default: "~/.config/apitecli/collections/default.json")
+  -g, --config <file>      alternative configuration file to use (default: "~/.config/teapicli/config.json")
+  -c, --collection <file>  a collection to load at start (default: "~/.config/teapicli/collections/default.json")
   -t, --client <type>      the client to use for HTTP requests (default: "axios")
-  -i, --importer <type>    the importer to read the collection format (default: "apitecli")
+  -i, --importer <type>    the importer to read the collection format (default: "teapicli")
   -h, --help               display help for command
 ```
 

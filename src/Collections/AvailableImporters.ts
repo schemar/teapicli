@@ -1,5 +1,5 @@
 enum AvailableImporters {
-  Apitecli = "apitecli",
+  Teapicli = "teapicli",
 }
 
 export default AvailableImporters;

@@ -1,12 +1,12 @@
 {
-  "name": "apitecli-ink",
+  "name": "teapicli",
   "version": "0.1.0",
   "license": "MIT",
   "bin": {
-    "apitecli": "./dist/cli.js"
+    "teapicli": "./dist/cli.js"
   },
-  "repository": "git@github.com:schemar/apitecli.git",
-  "author": "Martin Schenck <martin.schenck@futurice.com>",
+  "repository": "git@github.com:schemar/teapicli.git",
+  "author": "Martin Schenck <martinschenck@fastmail.com>",
   "engines": {
     "node": ">=12"
   },

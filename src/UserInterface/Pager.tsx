@@ -26,7 +26,7 @@ const Pager: FunctionComponent<{
       }
     });
     setLines(reflow);
-  }, [content]);
+  }, [content, width]);
 
   const [pointer, setPointer] = useState<number>(0);
   useInput((input) => {

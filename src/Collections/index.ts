@@ -1,6 +1,6 @@
 import Collection from "./Collection";
 import Importer from "./Importer";
-import ApitecliImporter from "./Importers/ApitecliImporter";
+import TeapicliImporter from "./Importers/TeapicliImporter";
 
 export default class Collections {
   public static load({
@@ -18,8 +18,8 @@ export default class Collections {
 
   private static getImporter(importer: string): Importer {
     switch (importer) {
-      case "apitecli":
-        return new ApitecliImporter();
+      case "teapicli":
+        return new TeapicliImporter();
       default:
         throw new Error(`Unknown importer, cannot continue: ${importer}`);
     }
