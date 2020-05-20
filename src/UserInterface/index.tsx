@@ -102,7 +102,7 @@ const UserInterface: FunctionComponent<{
           onClose={onWindowClose}
         />
       )}
-      <StatusBarComponent width={columns} />
+      <StatusBarComponent width={columns} message="" />
     </Box>
   );
 };
