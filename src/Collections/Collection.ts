@@ -8,13 +8,18 @@ export default class Collection {
 
   public readonly requests: Request[];
 
+  /** The location on disk. */
+  public readonly path: string;
+
   public constructor(collection: {
     name: string;
     environments: Environment[];
     requests: Request[];
+    path: string;
   }) {
     this.name = collection.name;
     this.environments = collection.environments;
     this.requests = collection.requests;
+    this.path = collection.path;
   }
 }

@@ -33,9 +33,9 @@ const UserInterface: FunctionComponent<{
   const [lastResponse, setLastResponse] = useState<Response>();
 
   useEffect(() => {
-    const newCollection = Collections.load({
+    const newCollection = Collections.read({
       filePath: program.collection,
-      importerName: program.importer,
+      importerName: configuration.get("importer"),
     });
     setCollection(newCollection);
     if (newCollection.requests.length > 0) {
@@ -44,7 +44,7 @@ const UserInterface: FunctionComponent<{
     if (newCollection.environments.length > 0) {
       setSelectedEnvironment(newCollection.environments[0]);
     }
-  }, [program.collection, program.importer]);
+  }, [program.collection, configuration]);
 
   useInput((input) => {
     if (input === configuration.get("keys.showResponse")) {

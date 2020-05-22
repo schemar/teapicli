@@ -16,6 +16,7 @@ export default class TeapicliImporter implements Importer {
       name: input.name,
       environments: this.environments(input),
       requests: this.requests(input),
+      path: filePath,
     });
 
     return collection;

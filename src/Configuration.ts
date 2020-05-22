@@ -5,6 +5,8 @@ export default class Configuration {
 
   constructor(options: { configFile: string }) {
     this.configuration = convict({
+      importer: "teapicli",
+      exporter: "teapicli",
       keys: {
         quit: {
           doc: "quit the application",
@@ -55,6 +57,11 @@ export default class Configuration {
           doc: "opens the pager and shows the entire response",
           format: String,
           default: "p",
+        },
+        write: {
+          doc: "persists the current state of the collection to disk",
+          format: String,
+          default: "w",
         },
       },
     });

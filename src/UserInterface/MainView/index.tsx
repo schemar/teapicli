@@ -7,6 +7,7 @@ import RequestsComponent from "./RequestsComponent";
 import SelectedRequestComponent from "./SelectedRequestComponent";
 import ResponseComponent from "./ResponseComponent";
 import Clients from "../../Clients";
+import Collections from "../../Collections";
 import Collection from "../../Collections/Collection";
 import Request from "../../Collections/Request";
 import Response from "../../Response";
@@ -47,6 +48,13 @@ const MainView: FunctionComponent<{
             setLastResponse(response);
           }
         );
+      }
+    } else if (input === configuration.get("keys.write")) {
+      if (collection !== undefined) {
+        Collections.write({
+          collection,
+          exporterName: configuration.get("exporter"),
+        });
       }
     }
   });
