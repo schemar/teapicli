@@ -62,20 +62,3 @@ Options:
 | Selector | `s` | `select` | Select item under the current pointer, e.g. the request, and close the selector. |
 | Selector | `q` | `close` | Close the selector and return to the main view withou change. |
 
-## Pre-Alpha
-
-* It is not yet possible to change the selected environment.
-* Variables from the environment are not yet evaluated.
-
-### Example Usage
-
-* `yarn start`
-* `s` to make a request
-* `h` to check response headers
-* `p` to see the entire response in the pager
-* `j/k` scroll in the pager
-* `q` close the pager
-* `r` choose another request
-* `s` confirm selection
-* `s` make the newly selected request
-* `q` quit the application
