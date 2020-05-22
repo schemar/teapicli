@@ -25,7 +25,9 @@ export default class TeapicliImporter implements Importer {
     const environments: Environment[] = [];
 
     Object.keys(input.environments).forEach((name: string) => {
-      environments.push(new Environment({ name }));
+      environments.push(
+        new Environment({ name, variables: input.environments[name] })
+      );
     });
 
     return environments;

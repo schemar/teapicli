@@ -41,10 +41,12 @@ const MainView: FunctionComponent<{
       if (selectedRequest instanceof Request) {
         setLoading(true);
         setStartTime(process.hrtime());
-        Clients.send(client, selectedRequest).then((response) => {
-          setLoading(false);
-          setLastResponse(response);
-        });
+        Clients.send(client, selectedRequest, selectedEnvironment).then(
+          (response) => {
+            setLoading(false);
+            setLastResponse(response);
+          }
+        );
       }
     }
   });
