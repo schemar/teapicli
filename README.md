@@ -50,6 +50,7 @@ Options:
 | Main view | `h` | `nextTab` | Switch tabs (body, headers) to inspect reqeust/response |
 | Main view | `p` | `showResponse` | Display the entire response body in a scrollable pager |
 | Main view | `r` | `selectRequst` | Open the selector to select another request of the collection |
+| Main view | `v` | `selectEnvironment` | Open the selector to select another environment of the collection |
 | Main view | `q` | `quit` | Quit the application |
 | Pager | `j` | `down` | Scroll down one line |
 | Pager | `k` | `up` | Scroll up one line |

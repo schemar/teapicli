@@ -17,6 +17,7 @@ enum ViewState {
   Main,
   ResponsePager,
   RequestSelector,
+  EnvironmentSelector,
 }
 
 const UserInterface: FunctionComponent<{
@@ -54,6 +55,10 @@ const UserInterface: FunctionComponent<{
       if (collection?.requests && collection.requests.length > 1) {
         setViewState(ViewState.RequestSelector);
       }
+    } else if (input === configuration.get("keys.selectEnvironment")) {
+      if (collection?.environments && collection.environments.length > 1) {
+        setViewState(ViewState.EnvironmentSelector);
+      }
     }
   });
 
@@ -65,6 +70,15 @@ const UserInterface: FunctionComponent<{
     collection!.requests.forEach((request) => {
       if (request.name === name) {
         setSelectedRequest(request);
+      }
+    });
+    onWindowClose();
+  };
+
+  const onEnvironmentSelect = (name: string) => {
+    collection!.environments.forEach((environment) => {
+      if (environment.name === name) {
+        setSelectedEnvironment(environment);
       }
     });
     onWindowClose();
@@ -99,6 +113,16 @@ const UserInterface: FunctionComponent<{
           items={collection!.requests}
           selectedItem={selectedRequest?.name}
           onSelect={onRequestSelect}
+          onClose={onWindowClose}
+        />
+      )}
+      {viewState === ViewState.EnvironmentSelector && (
+        <Selector
+          configuration={configuration}
+          height={rows}
+          items={collection!.environments}
+          selectedItem={selectedEnvironment?.name}
+          onSelect={onEnvironmentSelect}
           onClose={onWindowClose}
         />
       )}
