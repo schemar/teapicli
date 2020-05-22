@@ -58,6 +58,12 @@ export default class Configuration {
           format: String,
           default: "p",
         },
+        edit: {
+          doc:
+            "opens an editor to edit the current collection (does not persist)",
+          format: String,
+          default: "e",
+        },
         write: {
           doc: "persists the current state of the collection to disk",
           format: String,

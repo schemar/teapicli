@@ -38,13 +38,16 @@ const UserInterface: FunctionComponent<{
       importerName: configuration.get("importer"),
     });
     setCollection(newCollection);
-    if (newCollection.requests.length > 0) {
-      setSelectedRequest(newCollection.requests[0]);
-    }
-    if (newCollection.environments.length > 0) {
-      setSelectedEnvironment(newCollection.environments[0]);
-    }
   }, [program.collection, configuration]);
+
+  useEffect(() => {
+    if (collection !== undefined && collection.requests.length > 0) {
+      setSelectedRequest(collection.requests[0]);
+    }
+    if (collection !== undefined && collection.environments.length > 0) {
+      setSelectedEnvironment(collection.environments[0]);
+    }
+  }, [collection]);
 
   useInput((input) => {
     if (input === configuration.get("keys.showResponse")) {
@@ -91,6 +94,7 @@ const UserInterface: FunctionComponent<{
           configuration={configuration}
           client={program.client}
           collection={collection}
+          setCollection={setCollection}
           selectedEnvironment={selectedEnvironment}
           selectedRequest={selectedRequest}
           lastResponse={lastResponse}
