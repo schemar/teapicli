@@ -8,6 +8,7 @@ import Collection from "../Collections/Collection";
 import Environment from "../Collections/Environment";
 import Request from "../Collections/Request";
 import Response from "../Response";
+import FullScreen from "./FullScreen";
 import StatusBarComponent from "./StatusBarComponent";
 import MainView from "./MainView";
 import Pager from "./Pager";
@@ -88,50 +89,52 @@ const UserInterface: FunctionComponent<{
   };
 
   return (
-    <Box width={columns} height={rows - 1} flexDirection="column">
-      {viewState === ViewState.Main && (
-        <MainView
-          configuration={configuration}
-          client={program.client}
-          collection={collection}
-          setCollection={setCollection}
-          selectedEnvironment={selectedEnvironment}
-          selectedRequest={selectedRequest}
-          lastResponse={lastResponse}
-          setLastResponse={setLastResponse}
-        />
-      )}
-      {viewState === ViewState.ResponsePager && (
-        <Pager
-          configuration={configuration}
-          content={lastResponse!.body}
-          onClose={onWindowClose}
-          width={columns}
-          height={rows - 2}
-        />
-      )}
-      {viewState === ViewState.RequestSelector && (
-        <Selector
-          configuration={configuration}
-          height={rows}
-          items={collection!.requests}
-          selectedItem={selectedRequest?.name}
-          onSelect={onRequestSelect}
-          onClose={onWindowClose}
-        />
-      )}
-      {viewState === ViewState.EnvironmentSelector && (
-        <Selector
-          configuration={configuration}
-          height={rows}
-          items={collection!.environments}
-          selectedItem={selectedEnvironment?.name}
-          onSelect={onEnvironmentSelect}
-          onClose={onWindowClose}
-        />
-      )}
-      <StatusBarComponent width={columns} message="" />
-    </Box>
+    <FullScreen>
+      <Box width={columns} height={rows - 1} flexDirection="column">
+        {viewState === ViewState.Main && (
+          <MainView
+            configuration={configuration}
+            client={program.client}
+            collection={collection}
+            setCollection={setCollection}
+            selectedEnvironment={selectedEnvironment}
+            selectedRequest={selectedRequest}
+            lastResponse={lastResponse}
+            setLastResponse={setLastResponse}
+          />
+        )}
+        {viewState === ViewState.ResponsePager && (
+          <Pager
+            configuration={configuration}
+            content={lastResponse!.body}
+            onClose={onWindowClose}
+            width={columns}
+            height={rows - 2}
+          />
+        )}
+        {viewState === ViewState.RequestSelector && (
+          <Selector
+            configuration={configuration}
+            height={rows}
+            items={collection!.requests}
+            selectedItem={selectedRequest?.name}
+            onSelect={onRequestSelect}
+            onClose={onWindowClose}
+          />
+        )}
+        {viewState === ViewState.EnvironmentSelector && (
+          <Selector
+            configuration={configuration}
+            height={rows}
+            items={collection!.environments}
+            selectedItem={selectedEnvironment?.name}
+            onSelect={onEnvironmentSelect}
+            onClose={onWindowClose}
+          />
+        )}
+        <StatusBarComponent width={columns} message="" />
+      </Box>
+    </FullScreen>
   );
 };
 
