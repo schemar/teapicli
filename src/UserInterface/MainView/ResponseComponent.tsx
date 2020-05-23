@@ -1,15 +1,11 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { Box, Color, useInput } from "ink";
+import { Box, Color } from "ink";
 import Spinner from "ink-spinner";
 import { highlight } from "cli-highlight";
 import HttpStatus from "http-status-codes";
 import Configuration from "../../Configuration";
+import { Tab, Tabs } from "../Tabs";
 import Response from "../../Response";
-
-enum Tab {
-  Body,
-  Headers,
-}
 
 const ResponseComponent: FunctionComponent<{
   isLoading: boolean;
@@ -17,7 +13,6 @@ const ResponseComponent: FunctionComponent<{
   response?: Response;
   configuration: Configuration;
 }> = ({ isLoading, startTime, response, configuration }) => {
-  const [activeTab, setActiveTab] = useState<Tab>(Tab.Body);
   const [passedTime, setPassedTime] = useState<string>("");
   const [bodyLines, setBodyLines] = useState<string[]>([]);
 
@@ -46,21 +41,6 @@ const ResponseComponent: FunctionComponent<{
     }
   }, [response]);
 
-  useInput((input) => {
-    if (input === configuration.get("keys.nextTab")) {
-      switch (activeTab) {
-        case Tab.Body:
-          setActiveTab(Tab.Headers);
-          break;
-        case Tab.Headers:
-          setActiveTab(Tab.Body);
-          break;
-        default:
-          setActiveTab(Tab.Body);
-      }
-    }
-  });
-
   return (
     <Box padding={1} flexDirection="column">
       <Box>
@@ -79,37 +59,27 @@ const ResponseComponent: FunctionComponent<{
               {HttpStatus.getStatusText(response.status)}
             </Box>
           </Box>
-          <Box flexDirection="row">
-            <Color gray={activeTab !== Tab.Body} green={activeTab === Tab.Body}>
-              Body
-            </Color>
-            {" | "}
-            <Color
-              gray={activeTab !== Tab.Headers}
-              green={activeTab === Tab.Headers}
-            >
-              Headers
-            </Color>
-          </Box>
-          {activeTab === Tab.Body &&
-            bodyLines.slice(0, 12).map((line) => {
-              return (
-                <Box paddingLeft={2} textWrap="truncate-end">
-                  {line}
-                </Box>
-              );
-            })}
-          {bodyLines.length > 8 && <Box paddingLeft={2}>…</Box>}
-
-          {activeTab === Tab.Headers &&
-            Object.keys(response.headers).map((name) => {
-              return (
-                <Box paddingLeft={2} textWrap="truncate-end">
-                  <Color blue>{name}: </Color>
-                  {response.headers[name]}
-                </Box>
-              );
-            })}
+          <Tabs configuration={configuration}>
+            <Tab name="Body">
+              <Box flexDirection="column">
+                {bodyLines.slice(0, 12).map((line) => {
+                  return <Box textWrap="truncate-end">{line}</Box>;
+                })}
+              </Box>
+            </Tab>
+            <Tab name="Headers">
+              <Box flexDirection="column">
+                {Object.keys(response.headers).map((name) => {
+                  return (
+                    <Box textWrap="truncate-end">
+                      <Color blue>{name}: </Color>
+                      {response.headers[name]}
+                    </Box>
+                  );
+                })}
+              </Box>
+            </Tab>
+          </Tabs>
         </>
       )}
     </Box>
