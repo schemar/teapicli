@@ -1,19 +1,18 @@
 import React, { Children, FunctionComponent, useState } from "react";
 import { Box, Color, useInput } from "ink";
-import Configuration from "../Configuration";
 
 const Tab: FunctionComponent<{ name: string }> = ({ children }) => {
   return <>{children}</>;
 };
 
 const Tabs: FunctionComponent<{
-  configuration: Configuration;
+  changeKey: string;
   children: React.ReactElement<typeof Tab>[];
-}> = ({ configuration, children }) => {
+}> = ({ changeKey, children }) => {
   const [activeTab, setActiveTab] = useState<number>(0);
 
   useInput((input) => {
-    if (input === configuration.get("keys.nextTab")) {
+    if (input === changeKey) {
       if (activeTab + 1 >= Children.count(children)) {
         setActiveTab(0);
       } else {

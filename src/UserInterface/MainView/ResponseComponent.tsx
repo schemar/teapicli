@@ -59,7 +59,7 @@ const ResponseComponent: FunctionComponent<{
               {HttpStatus.getStatusText(response.status)}
             </Box>
           </Box>
-          <Tabs configuration={configuration}>
+          <Tabs changeKey={configuration.get("keys.nextTabResponse")}>
             <Tab name="Body">
               <Box flexDirection="column">
                 {bodyLines.slice(0, 12).map((line) => {

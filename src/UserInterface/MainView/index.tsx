@@ -113,7 +113,10 @@ const MainView: FunctionComponent<{
       </Box>
       <Box flexGrow={1} flexDirection="column">
         <Box height="50%">
-          <SelectedRequestComponent request={selectedRequest} />
+          <SelectedRequestComponent
+            request={selectedRequest}
+            configuration={configuration}
+          />
         </Box>
         <Box flexGrow={1}>
           <ResponseComponent

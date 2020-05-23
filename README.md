@@ -42,12 +42,13 @@ Options:
 | Pager | The pager shows content in a scrollable buffer. Could, for example, show a long response body. |
 | Selector | In the selector you can select an item. For example, when you want to change the selected request of the collection, the selector will open with a list of all requests to select one from. |
 
-### Keys
+### Commands
 
-| View | Key | Name | Effect |
+| View | Key | Command | Effect |
 | ---- | --- | ---- | ------ |
 | Main view | `s` | `send` | Send the currently selected request. |
-| Main view | `h` | `nextTab` | Switch tabs (body, headers) to inspect reqeust/response. |
+| Main view | `g` | `nextTabRequest` | Switch tabs (body, headers) to inspect request. |
+| Main view | `h` | `nextTabResponse` | Switch tabs (body, headers) to inspect response. |
 | Main view | `p` | `showResponse` | Display the entire response body in a scrollable pager. |
 | Main view | `r` | `selectRequst` | Open the selector to select another request of the collection. |
 | Main view | `v` | `selectEnvironment` | Open the selector to select another environment of the collection. |

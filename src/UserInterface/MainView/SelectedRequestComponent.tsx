@@ -1,11 +1,22 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Box, Color } from "ink";
+import highlight from "cli-highlight";
+import Configuration from "../../Configuration";
+import { Tab, Tabs } from "../Tabs";
 import Request from "../../Collections/Request";
 
-const SelectedRequestComponent: FunctionComponent<{ request?: Request }> = ({
-  request,
-}) => {
-  const bodyLines: string[] | undefined = request?.body.split("\n");
+const SelectedRequestComponent: FunctionComponent<{
+  request?: Request;
+  configuration: Configuration;
+}> = ({ request, configuration }) => {
+  const [bodyLines, setBodyLines] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (request !== undefined) {
+      setBodyLines(highlight(request.body).split("\n"));
+    }
+  }, [request]);
+
   return (
     <Box padding={1} flexDirection="column">
       <Box>
@@ -20,29 +31,29 @@ const SelectedRequestComponent: FunctionComponent<{ request?: Request }> = ({
         <Color green>URL: </Color>
         {request?.url}
       </Box>
-      <Box>
-        <Color green>Headers:</Color>
-      </Box>
-      {request &&
-        Object.keys(request.headers).map((name) => {
-          return (
-            <Box paddingLeft={2} textWrap="truncate-middle">
-              <Color blue>{name}: </Color>
-              {request.headers[name]}
+      {request && (
+        <Tabs changeKey={configuration.get("keys.nextTabRequest")}>
+          <Tab name="Body">
+            <Box flexDirection="column">
+              {bodyLines.slice(0, 12).map((line) => {
+                return <Box textWrap="truncate-end">{line}</Box>;
+              })}
             </Box>
-          );
-        })}
-      <Box>
-        <Color green>Body:</Color>
-      </Box>
-      {bodyLines &&
-        bodyLines.slice(0, 6).map((line) => {
-          return (
-            <Box paddingLeft={2} textWrap="truncate-end">
-              {line}
+          </Tab>
+          <Tab name="Headers">
+            <Box flexDirection="column">
+              {Object.keys(request.headers).map((name) => {
+                return (
+                  <Box textWrap="truncate-end">
+                    <Color blue>{name}: </Color>
+                    {request.headers[name]}
+                  </Box>
+                );
+              })}
             </Box>
-          );
-        })}
+          </Tab>
+        </Tabs>
+      )}
     </Box>
   );
 };

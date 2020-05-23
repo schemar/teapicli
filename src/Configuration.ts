@@ -18,10 +18,15 @@ export default class Configuration {
           format: String,
           default: "q",
         },
-        nextTab: {
-          doc: "selects the next tab, e.g. for body/header in main view",
+        nextTabResponse: {
+          doc: "selects the next tab for the request in main view",
           format: String,
           default: "h",
+        },
+        nextTabRequest: {
+          doc: "selects the next tab for the response in main view",
+          format: String,
+          default: "g",
         },
         down: {
           doc: "scroll down, e.g. in a pager view",
