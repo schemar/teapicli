@@ -45,7 +45,8 @@ Options:
 ### Commands
 
 | View | Key | Command | Effect |
-| ---- | --- | ---- | ------ |
+| ---- | --- | ------- | ------ |
+| All views | `:` | `command` | Type out a command by its name (names from this table). |
 | Main view | `s` | `send` | Send the currently selected request. |
 | Main view | `g` | `nextTabRequest` | Switch tabs (body, headers) to inspect request. |
 | Main view | `h` | `nextTabResponse` | Switch tabs (body, headers) to inspect response. |
@@ -55,11 +56,11 @@ Options:
 | Main view | `e` | `edit` | Edit the collection in your `$EDITOR`. Make sure to persist with `w` if you want to keep the changes. |
 | Main view | `w` | `write` | Persist the current state of the collection to disk. |
 | Main view | `q` | `quit` | Quit the application. |
-| Pager | `j` | `down` | Scroll down one line. |
-| Pager | `k` | `up` | Scroll up one line. |
-| Pager | `q` | `close` | Close the pager and return to the main view. |
-| Selector | `j` | `down` | Move pointer one line down. |
-| Selector | `k` | `up` | Move pointer one line up. |
-| Selector | `s` | `select` | Select item under the current pointer, e.g. the request, and close the selector. |
-| Selector | `q` | `close` | Close the selector and return to the main view withou change. |
+| Pager     | `j` | `down` | Scroll down one line. |
+| Pager     | `k` | `up` | Scroll up one line. |
+| Pager     | `q` | `close` | Close the pager and return to the main view. |
+| Selector  | `j` | `down` | Move pointer one line down. |
+| Selector  | `k` | `up` | Move pointer one line up. |
+| Selector  | `s` | `select` | Select item under the current pointer, e.g. the request, and close the selector. |
+| Selector  | `q` | `close` | Close the selector and return to the main view withou change. |
 

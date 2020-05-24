@@ -1,16 +1,17 @@
-import React, { FunctionComponent, useState } from "react";
-import { Box, Color, useInput } from "ink";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { Box, Color } from "ink";
 import { highlight } from "cli-highlight";
-import Configuration from "../Configuration";
+import { useStore } from "../Store";
 
 const Selector: FunctionComponent<{
-  configuration: Configuration;
   height: number;
   items: { name: string }[];
   selectedItem?: string;
   onSelect: (selection: string) => void;
   onClose: () => void;
-}> = ({ configuration, height, items, selectedItem, onSelect, onClose }) => {
+}> = ({ height, items, selectedItem, onSelect, onClose }) => {
+  const { commandsStore } = useStore();
+
   let initialPointer = 0;
   if (selectedItem !== undefined) {
     items.forEach((item, index) => {
@@ -21,16 +22,27 @@ const Selector: FunctionComponent<{
   }
   const [pointer, setPointer] = useState<number>(initialPointer);
 
-  useInput((input) => {
-    if (input === configuration.get("keys.close")) {
-      onClose();
-    } else if (input === configuration.get("keys.down")) {
-      setPointer(Math.min(items.length - 1, pointer + 1));
-    } else if (input === configuration.get("keys.up")) {
-      setPointer(Math.max(0, pointer - 1));
-    } else if (input === configuration.get("keys.select")) {
-      onSelect(items[pointer].name);
-    }
+  useEffect(() => {
+    const commands = {
+      close: () => {
+        onClose();
+      },
+      down: () => {
+        setPointer(Math.min(items.length - 1, pointer + 1));
+      },
+      up: () => {
+        setPointer(Math.max(0, pointer - 1));
+      },
+      select: () => {
+        onSelect(items[pointer].name);
+      },
+    };
+
+    commandsStore.registerCommands(commands);
+
+    return () => {
+      commandsStore.unregisterCommands(commands);
+    };
   });
 
   return (

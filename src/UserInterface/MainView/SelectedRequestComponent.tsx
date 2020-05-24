@@ -1,14 +1,12 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Box, Color } from "ink";
 import highlight from "cli-highlight";
-import Configuration from "../../Configuration";
 import { Tab, Tabs } from "../Tabs";
 import Request from "../../Collections/Request";
 
 const SelectedRequestComponent: FunctionComponent<{
   request?: Request;
-  configuration: Configuration;
-}> = ({ request, configuration }) => {
+}> = ({ request }) => {
   const [bodyLines, setBodyLines] = useState<string[]>([]);
 
   useEffect(() => {
@@ -32,7 +30,7 @@ const SelectedRequestComponent: FunctionComponent<{
         {request?.url}
       </Box>
       {request && (
-        <Tabs changeKey={configuration.get("keys.nextTabRequest")}>
+        <Tabs changeCommand="nextTabRequest">
           <Tab name="Body">
             <Box flexDirection="column">
               {bodyLines.slice(0, 12).map((line) => {

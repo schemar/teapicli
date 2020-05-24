@@ -3,7 +3,6 @@ import { Box, Color } from "ink";
 import Spinner from "ink-spinner";
 import { highlight } from "cli-highlight";
 import HttpStatus from "http-status-codes";
-import Configuration from "../../Configuration";
 import { Tab, Tabs } from "../Tabs";
 import Response from "../../Response";
 
@@ -11,8 +10,7 @@ const ResponseComponent: FunctionComponent<{
   isLoading: boolean;
   startTime?: [number, number];
   response?: Response;
-  configuration: Configuration;
-}> = ({ isLoading, startTime, response, configuration }) => {
+}> = ({ isLoading, startTime, response }) => {
   const [passedTime, setPassedTime] = useState<string>("");
   const [bodyLines, setBodyLines] = useState<string[]>([]);
 
@@ -59,7 +57,7 @@ const ResponseComponent: FunctionComponent<{
               {HttpStatus.getStatusText(response.status)}
             </Box>
           </Box>
-          <Tabs changeKey={configuration.get("keys.nextTabResponse")}>
+          <Tabs changeCommand="nextTabResponse">
             <Tab name="Body">
               <Box flexDirection="column">
                 {bodyLines.slice(0, 12).map((line) => {

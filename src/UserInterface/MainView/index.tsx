@@ -1,8 +1,9 @@
 import { execSync } from "child_process";
 import fs from "fs";
-import React, { FunctionComponent, useState } from "react";
-import { Box, useInput, useApp } from "ink";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { Box, useApp } from "ink";
 import Configuration from "../../Configuration";
+import { useStore } from "../../Store";
 import CollectionComponent from "./CollectionComponent";
 import EnvironmentsComponent from "./EnvironmentsComponent";
 import RequestsComponent from "./RequestsComponent";
@@ -35,69 +36,79 @@ const MainView: FunctionComponent<{
   setLastResponse,
 }) => {
   const { exit } = useApp();
+  const { commandsStore } = useStore();
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [startTime, setStartTime] = useState<[number, number]>();
 
-  useInput((input) => {
-    if (input === configuration.get("keys.quit")) {
-      exit();
-    } else if (input === configuration.get("keys.send")) {
-      if (selectedRequest instanceof Request) {
-        setLoading(true);
-        setStartTime(process.hrtime());
-        Clients.send(client, selectedRequest, selectedEnvironment).then(
-          (response) => {
-            setLoading(false);
-            setLastResponse(response);
-          }
-        );
-      }
-    } else if (input === configuration.get("keys.edit")) {
-      if (collection !== undefined) {
-        // Make sure the temporary path exists:
-        const tempDir = `${execSync('dirname "$(mktemp -u)"')
-          .toString("utf-8")
-          .replace(/(\n|\r)+$/, "")}/teapicli`;
-        execSync(`mkdir -p ${tempDir}`);
+  useEffect(() => {
+    const commands = {
+      quit: exit,
+      send: () => {
+        if (selectedRequest instanceof Request) {
+          setLoading(true);
+          setStartTime(process.hrtime());
+          Clients.send(client, selectedRequest, selectedEnvironment).then(
+            (response) => {
+              setLoading(false);
+              setLastResponse(response);
+            }
+          );
+        }
+      },
+      edit: () => {
+        if (collection !== undefined) {
+          // Make sure the temporary path exists:
+          const tempDir = `${execSync('dirname "$(mktemp -u)"')
+            .toString("utf-8")
+            .replace(/(\n|\r)+$/, "")}/teapicli`;
+          execSync(`mkdir -p ${tempDir}`);
 
-        // Store a copy of the collection in a temp path:
-        const tempPath = `${tempDir}/collection_${process.pid.toString(
-          10
-        )}.json`;
-        const copy = new Collection({ ...collection, path: tempPath });
-        Collections.write({
-          collection: copy,
-          exporterName: configuration.get("exporter"),
-        });
+          // Store a copy of the collection in a temp path:
+          const tempPath = `${tempDir}/collection_${process.pid.toString(
+            10
+          )}.json`;
+          const copy = new Collection({ ...collection, path: tempPath });
+          Collections.write({
+            collection: copy,
+            exporterName: configuration.get("exporter"),
+          });
 
-        // Edit the temporary copy:
-        const editor = process.env.EDITOR ?? "vi";
-        execSync(`${editor} ${tempPath}`, { stdio: "inherit" });
+          // Edit the temporary copy:
+          const editor = process.env.EDITOR ?? "vi";
+          execSync(`${editor} ${tempPath}`, { stdio: "inherit" });
 
-        // Update the collection from the temporary copy:
-        const updatedCollection = Collections.read({
-          filePath: tempPath,
-          importerName: configuration.get("importer"),
-        });
-        const updatedCollectionWithOriginalPath = new Collection({
-          ...updatedCollection,
-          path: collection.path,
-        });
-        setCollection(updatedCollectionWithOriginalPath);
+          // Update the collection from the temporary copy:
+          const updatedCollection = Collections.read({
+            filePath: tempPath,
+            importerName: configuration.get("importer"),
+          });
+          const updatedCollectionWithOriginalPath = new Collection({
+            ...updatedCollection,
+            path: collection.path,
+          });
+          setCollection(updatedCollectionWithOriginalPath);
 
-        // Delete the temporary copy:
-        fs.unlinkSync(tempPath);
-      }
-    } else if (input === configuration.get("keys.write")) {
-      if (collection !== undefined) {
-        Collections.write({
-          collection,
-          exporterName: configuration.get("exporter"),
-        });
-      }
-    }
+          // Delete the temporary copy:
+          fs.unlinkSync(tempPath);
+        }
+      },
+      write: () => {
+        if (collection !== undefined) {
+          Collections.write({
+            collection,
+            exporterName: configuration.get("exporter"),
+          });
+        }
+      },
+    };
+
+    commandsStore.registerCommands(commands);
+    return () => {
+      commandsStore.unregisterCommands(commands);
+    };
   });
+
   return (
     <Box width="100%" height="100%">
       <Box width={30} flexDirection="column">
@@ -113,17 +124,13 @@ const MainView: FunctionComponent<{
       </Box>
       <Box flexGrow={1} flexDirection="column">
         <Box height="50%">
-          <SelectedRequestComponent
-            request={selectedRequest}
-            configuration={configuration}
-          />
+          <SelectedRequestComponent request={selectedRequest} />
         </Box>
         <Box flexGrow={1}>
           <ResponseComponent
             isLoading={isLoading}
             startTime={startTime}
             response={lastResponse}
-            configuration={configuration}
           />
         </Box>
       </Box>

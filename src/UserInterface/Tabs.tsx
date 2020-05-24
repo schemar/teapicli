@@ -1,24 +1,31 @@
-import React, { Children, FunctionComponent, useState } from "react";
-import { Box, Color, useInput } from "ink";
+import React, { Children, FunctionComponent, useEffect, useState } from "react";
+import { Box, Color } from "ink";
+import { useStore } from "../Store";
 
 const Tab: FunctionComponent<{ name: string }> = ({ children }) => {
   return <>{children}</>;
 };
 
 const Tabs: FunctionComponent<{
-  changeKey: string;
+  changeCommand: string;
   children: React.ReactElement<typeof Tab>[];
-}> = ({ changeKey, children }) => {
+}> = ({ changeCommand, children }) => {
+  const { commandsStore } = useStore();
   const [activeTab, setActiveTab] = useState<number>(0);
 
-  useInput((input) => {
-    if (input === changeKey) {
+  useEffect(() => {
+    const commands: { [key: string]: () => void } = {};
+    commands[changeCommand] = () => {
       if (activeTab + 1 >= Children.count(children)) {
         setActiveTab(0);
       } else {
         setActiveTab(activeTab + 1);
       }
-    }
+    };
+    commandsStore.registerCommands(commands);
+    return () => {
+      commandsStore.unregisterCommands(commands);
+    };
   });
 
   return (

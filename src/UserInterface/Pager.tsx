@@ -1,15 +1,15 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { Box, useInput } from "ink";
+import { Box } from "ink";
 import { highlight } from "cli-highlight";
-import Configuration from "../Configuration";
+import { useStore } from "../Store";
 
 const Pager: FunctionComponent<{
-  configuration: Configuration;
   width: number;
   height: number;
   content: string;
   onClose: () => void;
-}> = ({ configuration, width, height, content, onClose }) => {
+}> = ({ width, height, content, onClose }) => {
+  const { commandsStore } = useStore();
   const [lines, setLines] = useState<string[]>([]);
 
   useEffect(() => {
@@ -29,14 +29,22 @@ const Pager: FunctionComponent<{
   }, [content, width]);
 
   const [pointer, setPointer] = useState<number>(0);
-  useInput((input) => {
-    if (input === configuration.get("keys.close")) {
-      onClose();
-    } else if (input === configuration.get("keys.down")) {
-      setPointer(Math.min(lines.length - 1, pointer + 1));
-    } else if (input === configuration.get("keys.up")) {
-      setPointer(Math.max(0, pointer - 1));
-    }
+  useEffect(() => {
+    const commands = {
+      close: () => {
+        onClose();
+      },
+      down: () => {
+        setPointer(Math.min(lines.length - 1, pointer + 1));
+      },
+      up: () => {
+        setPointer(Math.max(0, pointer - 1));
+      },
+    };
+    commandsStore.registerCommands(commands);
+    return () => {
+      commandsStore.unregisterCommands(commands);
+    };
   });
 
   return (

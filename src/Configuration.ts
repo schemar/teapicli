@@ -13,6 +13,11 @@ export default class Configuration {
           format: String,
           default: "q",
         },
+        command: {
+          doc: "start entering a command by name",
+          format: String,
+          default: ":",
+        },
         close: {
           doc: "closes a viewport, like a pager",
           format: String,
