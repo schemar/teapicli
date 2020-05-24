@@ -37,6 +37,7 @@ const StatusBarComponent: FunctionComponent<{
       setActive(true);
     } else if (active && key.escape) {
       setCommand("");
+      setContent("");
       setActive(false);
     } else if (!active) {
       let found = false;
@@ -48,7 +49,10 @@ const StatusBarComponent: FunctionComponent<{
           }
         }
       });
-      if (!found) {
+
+      if (found) {
+        setContent("");
+      } else {
         setContent(`Unknown shortcut: '${input}'`);
       }
     }
@@ -61,6 +65,7 @@ const StatusBarComponent: FunctionComponent<{
   const handleCommandSubmit = (input: string) => {
     if (commandsStore.availableCommands[input] !== undefined) {
       commandsStore.availableCommands[input]();
+      setContent("");
     } else {
       setContent(`Unknown command: '${input}'`);
     }
@@ -71,7 +76,7 @@ const StatusBarComponent: FunctionComponent<{
   return (
     <Box height={1} width={width}>
       {active ? (
-        <Color bgBlackBright>
+        <Color bgBlack white>
           <TextInput
             value={`${command}`}
             onChange={handleCommandChange}
@@ -81,7 +86,9 @@ const StatusBarComponent: FunctionComponent<{
         </Color>
       ) : (
         <Box textWrap="truncate-end">
-          <Color bgBlackBright>{content}</Color>
+          <Color bgBlack white>
+            {content}
+          </Color>
         </Box>
       )}
     </Box>
