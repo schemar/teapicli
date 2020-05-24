@@ -12,12 +12,12 @@ const exitFullScreen = () => {
 
 const FullScreen = ({ children }: { children: ReactElement }) => {
   useEffect(() => {
+    // trigger alternate screen
+    process.stdout.write(enterAltScreenCommand);
     // destroy alternate screen on unmount
     return exitFullScreen;
   }, []);
 
-  // trigger alternate screen
-  process.stdout.write(enterAltScreenCommand);
   return children;
 };
 
