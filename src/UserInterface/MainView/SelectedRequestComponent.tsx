@@ -1,35 +1,42 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Box, Color } from "ink";
+import { autorun } from "mobx";
+import { observer } from "mobx-react";
 import highlight from "cli-highlight";
 import { Tab, Tabs } from "../Tabs";
-import Request from "../../Collections/Request";
+import { useStore } from "../../Store";
 
-const SelectedRequestComponent: FunctionComponent<{
-  request?: Request;
-}> = ({ request }) => {
+const SelectedRequestComponent: FunctionComponent<{}> = () => {
+  const { collectionStore } = useStore();
   const [bodyLines, setBodyLines] = useState<string[]>([]);
 
-  useEffect(() => {
-    if (request !== undefined) {
-      setBodyLines(highlight(request.body).split("\n"));
-    }
-  }, [request]);
+  useEffect(
+    () =>
+      autorun(() => {
+        if (collectionStore.selectedRequest !== undefined) {
+          setBodyLines(
+            highlight(collectionStore.selectedRequest.body).split("\n")
+          );
+        }
+      }),
+    []
+  );
 
   return (
     <Box padding={1} flexDirection="column">
       <Box>
         <Color green>Selected Request: </Color>
-        <Color blue>{request?.name}</Color>
+        <Color blue>{collectionStore.selectedRequest?.name}</Color>
       </Box>
       <Box>
         <Color green>Method: </Color>
-        {request?.method}
+        {collectionStore.selectedRequest?.method}
       </Box>
       <Box>
         <Color green>URL: </Color>
-        {request?.url}
+        {collectionStore.selectedRequest?.url}
       </Box>
-      {request && (
+      {collectionStore.selectedRequest && (
         <Tabs changeCommand="nextTabRequest">
           <Tab name="Body">
             <Box flexDirection="column">
@@ -40,14 +47,16 @@ const SelectedRequestComponent: FunctionComponent<{
           </Tab>
           <Tab name="Headers">
             <Box flexDirection="column">
-              {Object.keys(request.headers).map((name) => {
-                return (
-                  <Box textWrap="truncate-end">
-                    <Color blue>{name}: </Color>
-                    {request.headers[name]}
-                  </Box>
-                );
-              })}
+              {Object.keys(collectionStore.selectedRequest.headers).map(
+                (name) => {
+                  return (
+                    <Box textWrap="truncate-end">
+                      <Color blue>{name}: </Color>
+                      {collectionStore.selectedRequest?.headers[name]}
+                    </Box>
+                  );
+                }
+              )}
             </Box>
           </Tab>
         </Tabs>
@@ -56,4 +65,4 @@ const SelectedRequestComponent: FunctionComponent<{
   );
 };
 
-export default SelectedRequestComponent;
+export default observer(SelectedRequestComponent);

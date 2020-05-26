@@ -1,6 +1,7 @@
 import { execSync } from "child_process";
 import fs from "fs";
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { observer } from "mobx-react";
 import { Box, useApp } from "ink";
 import Configuration from "../../Configuration";
 import { useStore } from "../../Store";
@@ -13,30 +14,13 @@ import Clients from "../../Clients";
 import Collections from "../../Collections";
 import Collection from "../../Collections/Collection";
 import Request from "../../Collections/Request";
-import Response from "../../Response";
-import Environment from "../../Collections/Environment";
 
 const MainView: FunctionComponent<{
   configuration: Configuration;
   client: string;
-  collection?: Collection;
-  setCollection: (collection: Collection) => void;
-  selectedEnvironment?: Environment;
-  selectedRequest?: Request;
-  setLastResponse: (response: Response | undefined) => void;
-  lastResponse?: Response;
-}> = ({
-  configuration,
-  client,
-  collection,
-  setCollection,
-  selectedEnvironment,
-  selectedRequest,
-  lastResponse,
-  setLastResponse,
-}) => {
+}> = ({ configuration, client }) => {
   const { exit } = useApp();
-  const { commandsStore } = useStore();
+  const { commandsStore, collectionStore } = useStore();
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [startTime, setStartTime] = useState<[number, number]>();
@@ -45,18 +29,21 @@ const MainView: FunctionComponent<{
     const commands = {
       quit: exit,
       send: () => {
-        if (selectedRequest instanceof Request) {
+        if (collectionStore.selectedRequest instanceof Request) {
           setLoading(true);
           setStartTime(process.hrtime());
-          Clients.send(client, selectedRequest, selectedEnvironment).then(
-            (response) => {
-              setLoading(false);
-              setLastResponse(response);
-            }
-          );
+          Clients.send(
+            client,
+            collectionStore.selectedRequest,
+            collectionStore.selectedEnvironment
+          ).then((response) => {
+            setLoading(false);
+            collectionStore.addResponse(response);
+          });
         }
       },
       edit: () => {
+        const { collection } = collectionStore;
         if (collection !== undefined) {
           // Make sure the temporary path exists:
           const tempDir = `${execSync('dirname "$(mktemp -u)"')
@@ -89,7 +76,7 @@ const MainView: FunctionComponent<{
               ...updatedCollection,
               path: collection.path,
             });
-            setCollection(updatedCollectionWithOriginalPath);
+            collectionStore.setCollection(updatedCollectionWithOriginalPath);
           }
 
           // Delete the temporary copy:
@@ -97,9 +84,9 @@ const MainView: FunctionComponent<{
         }
       },
       write: () => {
-        if (collection !== undefined) {
+        if (collectionStore.collection !== undefined) {
           Collections.write({
-            collection,
+            collection: collectionStore.collection,
             exporterName: configuration.get("exporter"),
           });
         }
@@ -115,30 +102,20 @@ const MainView: FunctionComponent<{
   return (
     <Box width="100%" height="100%">
       <Box width={30} flexDirection="column">
-        <CollectionComponent name={collection?.name} />
-        <EnvironmentsComponent
-          environments={collection?.environments}
-          selectedEnvironment={selectedEnvironment}
-        />
-        <RequestsComponent
-          requests={collection?.requests}
-          selectedRequest={selectedRequest}
-        />
+        <CollectionComponent />
+        <EnvironmentsComponent />
+        <RequestsComponent />
       </Box>
       <Box flexGrow={1} flexDirection="column">
         <Box height="50%">
-          <SelectedRequestComponent request={selectedRequest} />
+          <SelectedRequestComponent />
         </Box>
         <Box flexGrow={1}>
-          <ResponseComponent
-            isLoading={isLoading}
-            startTime={startTime}
-            response={lastResponse}
-          />
+          <ResponseComponent isLoading={isLoading} startTime={startTime} />
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default MainView;
+export default observer(MainView);

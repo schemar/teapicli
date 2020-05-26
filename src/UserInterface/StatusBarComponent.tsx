@@ -124,12 +124,13 @@ const StatusBarComponent: FunctionComponent<{
     <Box height={1} width={width}>
       {active ? (
         <Color bgBlack white>
+          :
           <TextInput
             value={`${command}`}
             onChange={handleCommandChange}
             onSubmit={handleCommandSubmit}
           />
-          {" ".repeat(width - command.length - 1)}
+          {" ".repeat(width - command.length - 2)}
         </Color>
       ) : (
         <Box textWrap="truncate-end">{content}</Box>

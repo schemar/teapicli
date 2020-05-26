@@ -1,13 +1,17 @@
 import React from "react";
+import CollectionStore from "./CollectionStore";
 import CommandsStore from "./CommandsStore";
 import MessagesStore from "./MessagesStore";
 
 class Store {
+  public readonly collectionStore: CollectionStore;
+
   public readonly messagesStore: MessagesStore;
 
   public readonly commandsStore: CommandsStore;
 
   constructor() {
+    this.collectionStore = new CollectionStore();
     this.messagesStore = new MessagesStore();
     this.commandsStore = new CommandsStore();
   }

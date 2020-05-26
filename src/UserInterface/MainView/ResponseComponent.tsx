@@ -1,16 +1,18 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Box, Color } from "ink";
 import Spinner from "ink-spinner";
+import { autorun } from "mobx";
+import { observer } from "mobx-react";
 import { highlight } from "cli-highlight";
 import HttpStatus from "http-status-codes";
+import { useStore } from "../../Store";
 import { Tab, Tabs } from "../Tabs";
-import Response from "../../Response";
 
 const ResponseComponent: FunctionComponent<{
   isLoading: boolean;
   startTime?: [number, number];
-  response?: Response;
-}> = ({ isLoading, startTime, response }) => {
+}> = ({ isLoading, startTime }) => {
+  const { collectionStore } = useStore();
   const [passedTime, setPassedTime] = useState<string>("");
   const [bodyLines, setBodyLines] = useState<string[]>([]);
 
@@ -33,11 +35,17 @@ const ResponseComponent: FunctionComponent<{
     };
   }, [startTime, isLoading]);
 
-  useEffect(() => {
-    if (response !== undefined) {
-      setBodyLines(highlight(response.body).split("\n"));
-    }
-  }, [response]);
+  useEffect(
+    () =>
+      autorun(() => {
+        if (collectionStore.lastResponse !== undefined) {
+          setBodyLines(
+            highlight(collectionStore.lastResponse.body).split("\n")
+          );
+        }
+      }),
+    []
+  );
 
   return (
     <Box padding={1} flexDirection="column">
@@ -48,13 +56,13 @@ const ResponseComponent: FunctionComponent<{
           {isLoading ? <Spinner type="dots" /> : <> </>} {passedTime}
         </Color>
       </Box>
-      {response && (
+      {collectionStore.lastResponse && (
         <>
           <Box>
             <Color green>Code: </Color>
             <Box>
-              <Color blue>{response.status} </Color>
-              {HttpStatus.getStatusText(response.status)}
+              <Color blue>{collectionStore.lastResponse.status} </Color>
+              {HttpStatus.getStatusText(collectionStore.lastResponse.status)}
             </Box>
           </Box>
           <Tabs changeCommand="nextTabResponse">
@@ -67,14 +75,16 @@ const ResponseComponent: FunctionComponent<{
             </Tab>
             <Tab name="Headers">
               <Box flexDirection="column">
-                {Object.keys(response.headers).map((name) => {
-                  return (
-                    <Box textWrap="truncate-end">
-                      <Color blue>{name}: </Color>
-                      {response.headers[name]}
-                    </Box>
-                  );
-                })}
+                {Object.keys(collectionStore.lastResponse.headers).map(
+                  (name) => {
+                    return (
+                      <Box textWrap="truncate-end">
+                        <Color blue>{name}: </Color>
+                        {collectionStore.lastResponse?.headers[name]}
+                      </Box>
+                    );
+                  }
+                )}
               </Box>
             </Tab>
           </Tabs>
@@ -84,4 +94,4 @@ const ResponseComponent: FunctionComponent<{
   );
 };
 
-export default ResponseComponent;
+export default observer(ResponseComponent);
