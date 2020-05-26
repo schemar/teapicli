@@ -1,10 +1,14 @@
 import React from "react";
 import CommandsStore from "./CommandsStore";
+import MessagesStore from "./MessagesStore";
 
 class Store {
+  public readonly messagesStore: MessagesStore;
+
   public readonly commandsStore: CommandsStore;
 
   constructor() {
+    this.messagesStore = new MessagesStore();
     this.commandsStore = new CommandsStore();
   }
 }
@@ -29,4 +33,4 @@ const useStore = () => {
   return storeInContext;
 };
 
-export { StoreProvider, useStore };
+export { StoreProvider, store, useStore };

@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { autorun } from "mobx";
 import { Box, Color, useInput } from "ink";
 import TextInput from "ink-text-input";
 import Configuration from "../Configuration";
@@ -17,27 +18,74 @@ const StatusBarComponent: FunctionComponent<{
     [key: string]: string;
   }>({});
   const [active, setActive] = useState<boolean>(false);
-  const [content, setContentHidden] = useState<string>("".padEnd(width, " "));
+  const [content, setContent] = useState<React.ReactNode>(
+    <Color bgBlack>{"".padEnd(width, " ")}</Color>
+  );
   const [command, setCommand] = useState<string>("");
-  const setContent = useCallback(
+  const setContentWhite = useCallback(
     (input: string) => {
-      setContentHidden(input.padEnd(width, " "));
+      setContent(
+        <Color bgBlack white>
+          {input.padEnd(width, " ")}
+        </Color>
+      );
+    },
+    [width]
+  );
+  const setContentStringYellow = useCallback(
+    (input: string) => {
+      setContent(
+        <Color bgBlack yellow>
+          {input.padEnd(width, " ")}
+        </Color>
+      );
+    },
+    [width]
+  );
+  const setContentStringRed = useCallback(
+    (input: string) => {
+      setContent(
+        <Color bgBlack red>
+          {input.padEnd(width, " ")}
+        </Color>
+      );
     },
     [width]
   );
 
-  const { commandsStore } = useStore();
+  const { commandsStore, messagesStore } = useStore();
 
   useEffect(() => {
     setConfigCommands(configuration.get("keys"));
   }, [configuration]);
+
+  useEffect(
+    () =>
+      autorun(() => {
+        const message = messagesStore.lastMessage;
+        if (message) {
+          switch (message.type) {
+            case "warning":
+              setContentStringYellow(message.message);
+              break;
+            case "error":
+              setContentStringRed(message.message);
+              break;
+            default:
+              setContentWhite(message.message);
+          }
+        }
+      }),
+    // autorun doesn't require dependencies in useEffect.
+    [] // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   useInput((input: string, key) => {
     if (input === configCommands.command) {
       setActive(true);
     } else if (active && key.escape) {
       setCommand("");
-      setContent("");
+      setContentWhite("");
       setActive(false);
     } else if (!active) {
       let found = false;
@@ -45,15 +93,14 @@ const StatusBarComponent: FunctionComponent<{
         if (commandsStore.availableCommands[name] !== undefined) {
           if (configCommands[name] === input) {
             found = true;
+            setContentWhite("");
             commandsStore.availableCommands[name]();
           }
         }
       });
 
-      if (found) {
-        setContent("");
-      } else {
-        setContent(`Unknown shortcut: '${input}'`);
+      if (!found) {
+        messagesStore.warning(`Unknown shortcut: '${input}'`);
       }
     }
   });
@@ -65,9 +112,9 @@ const StatusBarComponent: FunctionComponent<{
   const handleCommandSubmit = (input: string) => {
     if (commandsStore.availableCommands[input] !== undefined) {
       commandsStore.availableCommands[input]();
-      setContent("");
+      setContentWhite("");
     } else {
-      setContent(`Unknown command: '${input}'`);
+      messagesStore.warning(`Unknown command: '${input}'`);
     }
     setCommand("");
     setActive(false);
@@ -85,11 +132,7 @@ const StatusBarComponent: FunctionComponent<{
           {" ".repeat(width - command.length - 1)}
         </Color>
       ) : (
-        <Box textWrap="truncate-end">
-          <Color bgBlack white>
-            {content}
-          </Color>
-        </Box>
+        <Box textWrap="truncate-end">{content}</Box>
       )}
     </Box>
   );

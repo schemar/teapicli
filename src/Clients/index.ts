@@ -1,3 +1,4 @@
+import { store } from "../Store";
 import Client from "../Client";
 import Request from "../Collections/Request";
 import Environment from "../Collections/Environment";
@@ -9,8 +10,11 @@ export default class Clients {
     clientName: string,
     request: Request,
     environment?: Environment
-  ): Promise<Response> {
+  ): Promise<Response | undefined> {
     const client = Clients.getClient(clientName);
+    if (client === undefined) {
+      return Promise.resolve(undefined);
+    }
 
     const replacedRequest =
       environment !== undefined ? environment.applyTo(request) : request;
@@ -18,12 +22,16 @@ export default class Clients {
     return client.send(replacedRequest);
   }
 
-  private static getClient(clientName: string): Client {
+  private static getClient(clientName: string): Client | undefined {
     switch (clientName) {
       case "axios":
         return new AxiosClient();
       default:
-        throw new Error(`Unknown client, cannot continue: ${clientName}`);
+        store.messagesStore.error(
+          `Unknown client, cannot continue: ${clientName}`
+        );
     }
+
+    return undefined;
   }
 }

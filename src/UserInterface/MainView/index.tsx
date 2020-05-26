@@ -23,7 +23,7 @@ const MainView: FunctionComponent<{
   setCollection: (collection: Collection) => void;
   selectedEnvironment?: Environment;
   selectedRequest?: Request;
-  setLastResponse: (response: Response) => void;
+  setLastResponse: (response: Response | undefined) => void;
   lastResponse?: Response;
 }> = ({
   configuration,
@@ -83,11 +83,14 @@ const MainView: FunctionComponent<{
             filePath: tempPath,
             importerName: configuration.get("importer"),
           });
-          const updatedCollectionWithOriginalPath = new Collection({
-            ...updatedCollection,
-            path: collection.path,
-          });
-          setCollection(updatedCollectionWithOriginalPath);
+
+          if (updatedCollection !== undefined) {
+            const updatedCollectionWithOriginalPath = new Collection({
+              ...updatedCollection,
+              path: collection.path,
+            });
+            setCollection(updatedCollectionWithOriginalPath);
+          }
 
           // Delete the temporary copy:
           fs.unlinkSync(tempPath);

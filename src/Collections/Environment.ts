@@ -1,4 +1,5 @@
 import Request from "./Request";
+import { store } from "../Store";
 
 export default class Environment {
   public readonly name: string;
@@ -38,10 +39,15 @@ export default class Environment {
     }
 
     const nestedEnv = this.findNestedEnv(match);
-    return input.replace(match[0], nestedEnv);
+
+    if (nestedEnv) {
+      return input.replace(match[0], nestedEnv);
+    }
+
+    return input;
   }
 
-  private findNestedEnv(match: string[]): string {
+  private findNestedEnv(match: string[]): string | undefined {
     const split = match[1].split(".");
     let nestedEnv = this.variables;
     // Iterate down the object properties and sub-properties
@@ -49,7 +55,8 @@ export default class Environment {
       if (nestedEnv[split[i]] !== undefined) {
         nestedEnv = nestedEnv[split[i]];
       } else {
-        throw new Error(`Unknown variable in string: ${match[1]}`);
+        store.messagesStore.error(`Unknown variable in string: ${match[1]}`);
+        return undefined;
       }
     }
     return nestedEnv;
