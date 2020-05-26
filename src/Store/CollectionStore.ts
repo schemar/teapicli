@@ -19,10 +19,14 @@ export default class CollectionStore {
 
     if (collection && collection.environments.length > 0) {
       [this.selectedEnvironment] = collection.environments;
+    } else {
+      this.selectedEnvironment = undefined;
     }
 
     if (collection && collection.requests.length > 0) {
       [this.selectedRequest] = collection.requests;
+    } else {
+      this.selectedRequest = undefined;
     }
   }
 
