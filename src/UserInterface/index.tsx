@@ -20,9 +20,10 @@ enum ViewState {
 }
 
 const UserInterface: FunctionComponent<{
+  collectionPath: string;
   program: any;
   configuration: Configuration;
-}> = ({ program, configuration }) => {
+}> = ({ collectionPath, program, configuration }) => {
   const { commandsStore, collectionStore } = useStore();
   const [columns, rows] = useStdoutDimensions();
 
@@ -30,7 +31,7 @@ const UserInterface: FunctionComponent<{
 
   useEffect(() => {
     const newCollection = Collections.read({
-      filePath: program.collection,
+      filePath: collectionPath,
       importerName: configuration.get("importer"),
     });
     collectionStore.setCollection(newCollection);

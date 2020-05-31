@@ -3,31 +3,43 @@
 import React from "react";
 import { render } from "ink";
 import { Command } from "commander";
+import packageJson from "../package.json";
 import Configuration from "./Configuration";
 import UserInterface from "./UserInterface";
 
 const program = new Command();
 
 program
-  .version("0.1.0")
+  .name("teapicli")
+  .version(packageJson.version)
+  .arguments("<collection>")
   .option("-g, --config <file>", "alternative configuration file to use")
-  .option(
-    "-c, --collection <file>",
-    "a collection to load at start",
-    "~/.config/teapicli/collections/default.json"
-  )
   .option(
     "-t, --client <type>",
     "the client to use for HTTP requests",
     "axios"
   );
 
+/* eslint-disable no-console */
+// must be before .parse()
+program.on("--help", () => {
+  console.log("");
+  console.log("Example call:");
+  console.log("  $ teapicli ./my-collection.json");
+});
+
 program.parse(process.argv);
+
+if (program.args.length !== 1) {
+  program.help();
+}
+
+const [collectionPath] = program.args;
 
 const configuration: Configuration = new Configuration({
   configFile: program.config,
 });
 
 render(
-  React.createElement(UserInterface, { program, configuration })
+  React.createElement(UserInterface, { collectionPath, program, configuration })
 ).waitUntilExit();

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "bin": {
-    "teapicli": "./dist/cli.js"
+    "teapicli": "./dist/src/cli.js"
   },
   "repository": "git@github.com:schemar/teapicli.git",
   "author": "Martin Schenck <martinschenck@fastmail.com>",
@@ -11,12 +11,13 @@
     "node": ">=12"
   },
   "scripts": {
-    "start": "yarn tsc && node ./dist/app.js --collection ./collection.json",
+    "start": "node -r ts-node/register ./src/cli.ts ./examples/collection.json",
     "lint": "yarn eslint --config .eslintrc.js './src/**'",
     "fix": "yarn lint --fix",
-    "test": "jest ./src",
-    "build": "rm -r ./dist && yarn tsc",
-    "watch": "watch 'yarn start' ./src"
+    "test": "jest --passWithNoTests ./src",
+    "build": "rm -rf ./dist && yarn tsc",
+    "watch": "watch 'yarn start' ./src",
+    "prepublish": "yarn test && yarn build"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -63,6 +64,7 @@
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "ts-jest": "^26.0.0",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.2",
     "watch": "^1.0.2"
   }

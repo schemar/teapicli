@@ -14,22 +14,29 @@ yarn start
 
 ## Usage
 
+Basic usage:
+
+```sh
+teapicli ./my-collection.json
+```
+
 If you start teapicli with `yarn start`, it will use the examples provided with this repo.
-You can check `./collection.json`.
+You can check [`./examples/collection.json`](./examples/collection.json).
 The collection file defines the requests you will be able to make from within teapicli.
 
 Help output:
 
 ```sh
-Usage: app [options]
+Usage: teapicli [options] <collection>
 
 Options:
-  -V, --version            output the version number
-  -g, --config <file>      alternative configuration file to use
-  -c, --collection <file>  a collection to load at start (default: "~/.config/teapicli/collections/default.json")
-  -t, --client <type>      the client to use for HTTP requests (default: "axios")
-  -i, --importer <type>    the importer to read the collection format (default: "teapicli")
-  -h, --help               display help for command
+  -V, --version        output the version number
+  -g, --config <file>  alternative configuration file to use
+  -t, --client <type>  the client to use for HTTP requests (default: "axios")
+  -h, --help           display help for command
+
+Example call:
+  $ teapicli ./my-collection.json
 ```
 
 ### Views
