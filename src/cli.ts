@@ -13,7 +13,7 @@ const program = new Command();
 
 program
   .name("teapicli")
-  .version("1.0.0-alpha.2")
+  .version("1.0.0-alpha.3")
   .arguments("<collection>")
   .option("-g, --config <file>", "alternative configuration file to use")
   .option(

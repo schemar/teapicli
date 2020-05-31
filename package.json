@@ -2,13 +2,13 @@
   "name": "teapicli",
   "description": "Teapicli is a terminal API client that manages collections.",
   "homepage": "https://github.com/schemar/teapicli",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "license": "MIT",
   "files": [
     "dist"
   ],
   "bin": {
-    "teapicli": "./dist/src/cli.js"
+    "teapicli": "./dist/cli.js"
   },
   "repository": {
     "type": "git",
