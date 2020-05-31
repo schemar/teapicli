@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { Box } from "ink";
 import useStdoutDimensions from "ink-use-stdout-dimensions";
 import Configuration from "../Configuration";

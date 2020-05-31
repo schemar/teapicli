@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Box, Color } from "ink";
 import { autorun } from "mobx";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import highlight from "cli-highlight";
 import { Tab, Tabs } from "../Tabs";
 import { useStore } from "../../Store";

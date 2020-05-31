@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Box, Color } from "ink";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { useStore } from "../../Store";
 
 const RequestsComponent: FunctionComponent<{}> = () => {

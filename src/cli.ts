@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
+// MobX Observer Batching: https://github.com/mobxjs/mobx-react-lite/#observer-batching
+import "mobx-react-lite/batchingForReactDom";
+
 import React from "react";
 import { render } from "ink";
 import { Command } from "commander";
-import packageJson from "../package.json";
 import Configuration from "./Configuration";
 import UserInterface from "./UserInterface";
 
@@ -11,7 +13,7 @@ const program = new Command();
 
 program
   .name("teapicli")
-  .version(packageJson.version)
+  .version("1.0.0-alpha.1")
   .arguments("<collection>")
   .option("-g, --config <file>", "alternative configuration file to use")
   .option(

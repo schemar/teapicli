@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
 import fs from "fs";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { Box, useApp } from "ink";
 import Configuration from "../../Configuration";
 import { useStore } from "../../Store";
