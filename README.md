@@ -6,10 +6,10 @@ It allows you to store and group requests for faster access.
 
 ## Installation
 
+Install as a global npm package:
+
 ```sh
-git clone
-yarn
-yarn start
+npm install -g teapicli
 ```
 
 ## Usage
