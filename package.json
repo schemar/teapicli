@@ -11,7 +11,7 @@
     "node": ">=12"
   },
   "scripts": {
-    "start": "yarn tsc && node ./dist/app.js --config ./config.json --collection ./collection.json",
+    "start": "yarn tsc && node ./dist/app.js --collection ./collection.json",
     "lint": "yarn eslint --config .eslintrc.js './src/**'",
     "fix": "yarn lint --fix",
     "test": "jest ./src",

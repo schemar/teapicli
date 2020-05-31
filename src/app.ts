@@ -10,11 +10,7 @@ const program = new Command();
 
 program
   .version("0.1.0")
-  .option(
-    "-g, --config <file>",
-    "alternative configuration file to use",
-    "~/.config/teapicli/config.json"
-  )
+  .option("-g, --config <file>", "alternative configuration file to use")
   .option(
     "-c, --collection <file>",
     "a collection to load at start",

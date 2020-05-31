@@ -1,3 +1,6 @@
+import fs from "fs";
+import os from "os";
+import path from "path";
 import convict from "convict";
 
 export default class Configuration {
@@ -82,7 +85,16 @@ export default class Configuration {
       },
     });
 
-    this.configuration.loadFile(options.configFile);
+    // Read the config from the given path.
+    // If no path is given, check in the default path.
+    // If the file doesn't exist, don't read it.
+    const configPath =
+      options.configFile ??
+      path.join(os.homedir(), ".config", "teapicli", "config.json");
+    if (fs.existsSync(configPath)) {
+      this.configuration.loadFile(configPath);
+    }
+
     this.configuration.validate({ allowed: "strict" });
   }
 

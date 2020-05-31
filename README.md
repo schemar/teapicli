@@ -1,7 +1,5 @@
 # teapicli
 
-**Pre-alpha; not really usable**
-
 Teapicli is a terminal API client.
 You can use it to make web requests and inspect responses.
 It allows you to store and group requests for faster access.
@@ -17,7 +15,7 @@ yarn start
 ## Usage
 
 If you start teapicli with `yarn start`, it will use the examples provided with this repo.
-You can check `./config.json` and, more importantly, `./collection.json`.
+You can check `./collection.json`.
 The collection file defines the requests you will be able to make from within teapicli.
 
 Help output:
@@ -27,7 +25,7 @@ Usage: app [options]
 
 Options:
   -V, --version            output the version number
-  -g, --config <file>      alternative configuration file to use (default: "~/.config/teapicli/config.json")
+  -g, --config <file>      alternative configuration file to use
   -c, --collection <file>  a collection to load at start (default: "~/.config/teapicli/collections/default.json")
   -t, --client <type>      the client to use for HTTP requests (default: "axios")
   -i, --importer <type>    the importer to read the collection format (default: "teapicli")
@@ -63,4 +61,24 @@ Options:
 | Selector  | `k` | `up` | Move pointer one line up. |
 | Selector  | `s` | `select` | Select item under the current pointer, e.g. the request, and close the selector. |
 | Selector  | `q` | `close` | Close the selector and return to the main view withou change. |
+
+### Configuration
+
+Teapicli uses [convict](https://github.com/mozilla/node-convict) to manage configuration.
+
+You can create a configuration file at `$HOME/.config/teapicli/config.json`.
+If you do, it will be read on every start of teapicli.
+You can still override it with the `--config` CLI option.
+
+The configuration is a JSON file that can change the default configuration.
+Check [`Configuration.ts`](./src/Configuration.ts) for the available options.
+For example, to map the `quit` command to `a` instead of `q`, it would look like the following:
+
+```json
+{
+  "keys": {
+    "quit": "a"
+  }
+}
+```
 
