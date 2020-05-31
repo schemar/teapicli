@@ -35,7 +35,7 @@ const Tabs: FunctionComponent<{
           return (
             <Box>
               {index > 0 && " | "}
-              <Color gray={activeTab !== index} green={activeTab === index}>
+              <Color white={activeTab !== index} green={activeTab === index}>
                 {child?.props.name}
               </Color>
             </Box>
