@@ -7,9 +7,8 @@ const Pager: FunctionComponent<{
   width: number;
   height: number;
   content: string;
-  onClose: () => void;
-}> = ({ width, height, content, onClose }) => {
-  const { commandsStore } = useStore();
+}> = ({ width, height, content }) => {
+  const { commandsStore, viewsStore } = useStore();
   const [lines, setLines] = useState<string[]>([]);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ const Pager: FunctionComponent<{
   useEffect(() => {
     const commands = {
       close: () => {
-        onClose();
+        viewsStore.popView();
       },
       down: () => {
         setPointer(Math.min(lines.length - 1, pointer + 1));

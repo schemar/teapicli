@@ -8,9 +8,8 @@ const Selector: FunctionComponent<{
   items: { name: string }[];
   selectedItem?: string;
   onSelect: (selection: string) => void;
-  onClose: () => void;
-}> = ({ height, items, selectedItem, onSelect, onClose }) => {
-  const { commandsStore } = useStore();
+}> = ({ height, items, selectedItem, onSelect }) => {
+  const { commandsStore, viewsStore } = useStore();
 
   let initialPointer = 0;
   if (selectedItem !== undefined) {
@@ -25,7 +24,7 @@ const Selector: FunctionComponent<{
   useEffect(() => {
     const commands = {
       close: () => {
-        onClose();
+        viewsStore.popView();
       },
       down: () => {
         setPointer(Math.min(items.length - 1, pointer + 1));
@@ -35,6 +34,7 @@ const Selector: FunctionComponent<{
       },
       select: () => {
         onSelect(items[pointer].name);
+        viewsStore.popView();
       },
     };
 

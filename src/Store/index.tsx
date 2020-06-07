@@ -2,6 +2,7 @@ import React from "react";
 import CollectionStore from "./CollectionStore";
 import CommandsStore from "./CommandsStore";
 import MessagesStore from "./MessagesStore";
+import ViewsStore from "./ViewsStore";
 
 class Store {
   public readonly collectionStore: CollectionStore;
@@ -10,10 +11,13 @@ class Store {
 
   public readonly commandsStore: CommandsStore;
 
+  public readonly viewsStore: ViewsStore;
+
   constructor() {
     this.collectionStore = new CollectionStore();
     this.messagesStore = new MessagesStore();
     this.commandsStore = new CommandsStore();
+    this.viewsStore = new ViewsStore();
   }
 }
 

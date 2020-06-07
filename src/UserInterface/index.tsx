@@ -1,9 +1,10 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { Box } from "ink";
+import { Box, useApp } from "ink";
 import useStdoutDimensions from "ink-use-stdout-dimensions";
 import Configuration from "../Configuration";
 import { useStore, StoreProvider } from "../Store";
+import { View } from "../Store/ViewsStore";
 import Collections from "../Collections";
 import FullScreen from "./FullScreen";
 
@@ -12,22 +13,14 @@ import MainView from "./MainView";
 import Pager from "./Pager";
 import Selector from "./Selector";
 
-enum ViewState {
-  Main,
-  ResponsePager,
-  RequestSelector,
-  EnvironmentSelector,
-}
-
 const UserInterface: FunctionComponent<{
   collectionPath: string;
   program: any;
   configuration: Configuration;
 }> = ({ collectionPath, program, configuration }) => {
-  const { commandsStore, collectionStore } = useStore();
+  const { exit } = useApp();
+  const { commandsStore, collectionStore, viewsStore } = useStore();
   const [columns, rows] = useStdoutDimensions();
-
-  const [viewState, setViewState] = useState<ViewState>(ViewState.Main);
 
   useEffect(() => {
     const newCollection = Collections.read({
@@ -35,23 +28,23 @@ const UserInterface: FunctionComponent<{
       importerName: configuration.get("importer"),
     });
     collectionStore.setCollection(newCollection);
-  }, [program.collection, configuration]);
+  }, [program.collection, configuration, collectionPath]);
 
   useEffect(() => {
     const commands = {
       showResponse: () => {
         if (collectionStore.lastResponse !== undefined) {
-          setViewState(ViewState.ResponsePager);
+          viewsStore.pushView(View.ResponsePager);
         }
       },
       selectRequest: () => {
         if (collectionStore.hasRequests) {
-          setViewState(ViewState.RequestSelector);
+          viewsStore.pushView(View.RequestSelector);
         }
       },
       selectEnvironment: () => {
         if (collectionStore.hasEnvironments) {
-          setViewState(ViewState.EnvironmentSelector);
+          viewsStore.pushView(View.EnvironmentSelector);
         }
       },
     };
@@ -61,53 +54,50 @@ const UserInterface: FunctionComponent<{
     return () => {
       commandsStore.unregisterCommands(commands);
     };
-  });
+  }, []);
 
-  const onWindowClose = () => {
-    setViewState(ViewState.Main);
-  };
+  useEffect(() => {
+    if (viewsStore.activeView === undefined) {
+      exit();
+    }
+  }, [viewsStore.activeView, exit]);
 
   const onRequestSelect = (name: string) => {
     collectionStore.setSelectedRequestByName(name);
-    onWindowClose();
   };
 
   const onEnvironmentSelect = (name: string) => {
     collectionStore.setSelectedEnvironmentByName(name);
-    onWindowClose();
   };
 
   return (
     <FullScreen>
       <StoreProvider>
         <Box width={columns} height={rows - 1} flexDirection="column">
-          {viewState === ViewState.Main && (
+          {viewsStore.activeView === View.Main && (
             <MainView configuration={configuration} client={program.client} />
           )}
-          {viewState === ViewState.ResponsePager && (
+          {viewsStore.activeView === View.ResponsePager && (
             <Pager
               content={collectionStore.lastResponse!.body}
-              onClose={onWindowClose}
               width={columns}
               height={rows - 2}
             />
           )}
-          {viewState === ViewState.RequestSelector && (
+          {viewsStore.activeView === View.RequestSelector && (
             <Selector
               height={rows}
               items={collectionStore.collection!.requests}
               selectedItem={collectionStore.selectedRequest?.name}
               onSelect={onRequestSelect}
-              onClose={onWindowClose}
             />
           )}
-          {viewState === ViewState.EnvironmentSelector && (
+          {viewsStore.activeView === View.EnvironmentSelector && (
             <Selector
               height={rows}
               items={collectionStore.collection!.environments}
               selectedItem={collectionStore.selectedEnvironment?.name}
               onSelect={onEnvironmentSelect}
-              onClose={onWindowClose}
             />
           )}
           <StatusBarComponent width={columns} configuration={configuration} />

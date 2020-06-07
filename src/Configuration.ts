@@ -11,74 +11,70 @@ export default class Configuration {
       importer: "teapicli",
       exporter: "teapicli",
       keys: {
-        quit: {
-          doc: "quit the application",
-          format: String,
-          default: "q",
-        },
         command: {
-          doc: "start entering a command by name",
+          doc: "Start entering a command by name.",
           format: String,
           default: ":",
         },
         close: {
-          doc: "closes a viewport, like a pager",
+          doc:
+            "Clos the current view and return to the previous view. Exits the application if the last view is closed.",
           format: String,
           default: "q",
         },
         nextTabResponse: {
-          doc: "selects the next tab for the request in main view",
+          doc: "Selects the next tab for the request in main view.",
           format: String,
           default: "h",
         },
         nextTabRequest: {
-          doc: "selects the next tab for the response in main view",
+          doc: "Selects the next tab for the response in main view.",
           format: String,
           default: "g",
         },
         down: {
-          doc: "scroll down, e.g. in a pager view",
+          doc: "Scroll down, e.g. in a pager view.",
           format: String,
           default: "j",
         },
         up: {
-          doc: "scroll up, e.g. in a pager view",
+          doc: "Scroll up, e.g. in a pager view.",
           format: String,
           default: "k",
         },
         select: {
-          doc: "select the item under cursor",
+          doc: "Select the item under cursor.",
           format: String,
           default: "s",
         },
         send: {
-          doc: "send the selected request",
+          doc: "Send the selected request.",
           format: String,
           default: "s",
         },
         selectRequest: {
-          doc: "select a different request to send",
+          doc: "Select a different request to send.",
           format: String,
           default: "r",
         },
         selectEnvironment: {
-          doc: "focus environment to select with j/k",
+          doc: "Focus environment to select with j/k.",
           format: String,
           default: "v",
         },
         showResponse: {
-          doc: "opens the pager and shows the entire response",
+          doc: "Opens the pager and shows the entire response.",
           format: String,
           default: "p",
         },
         edit: {
           doc:
-            "opens an editor to edit the current collection (does not persist)",
+            "Opens an editor to edit the current collection (does not persist).",
           format: String,
           default: "e",
         },
         write: {
-          doc: "persists the current state of the collection to disk",
+          doc: "Persists the current state of the collection to disk.",
           format: String,
           default: "w",
         },

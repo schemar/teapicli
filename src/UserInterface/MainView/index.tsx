@@ -2,7 +2,7 @@ import { execSync } from "child_process";
 import fs from "fs";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Box, useApp } from "ink";
+import { Box } from "ink";
 import Configuration from "../../Configuration";
 import { useStore } from "../../Store";
 import CollectionComponent from "./CollectionComponent";
@@ -19,15 +19,16 @@ const MainView: FunctionComponent<{
   configuration: Configuration;
   client: string;
 }> = ({ configuration, client }) => {
-  const { exit } = useApp();
-  const { commandsStore, collectionStore } = useStore();
+  const { commandsStore, collectionStore, viewsStore } = useStore();
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [startTime, setStartTime] = useState<[number, number]>();
 
   useEffect(() => {
     const commands = {
-      quit: exit,
+      close: () => {
+        viewsStore.popView();
+      },
       send: () => {
         if (collectionStore.selectedRequest instanceof Request) {
           setLoading(true);

@@ -1,3 +1,6 @@
+# Include doc once it is useful
+doc
+
 # IDEs
 .kakrc.local
 
