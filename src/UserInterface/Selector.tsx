@@ -23,9 +23,6 @@ const Selector: FunctionComponent<{
 
   useEffect(() => {
     const commands = {
-      close: () => {
-        viewsStore.popView();
-      },
       down: () => {
         setPointer(Math.min(items.length - 1, pointer + 1));
       },

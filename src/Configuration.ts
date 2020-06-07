@@ -18,9 +18,14 @@ export default class Configuration {
         },
         close: {
           doc:
-            "Clos the current view and return to the previous view. Exits the application if the last view is closed.",
+            "Close the current view and return to the previous view. Exits the application if the last view is closed.",
           format: String,
           default: "q",
+        },
+        listMessages: {
+          doc: "Open a view with all recent messages.",
+          format: String,
+          default: "m",
         },
         nextTabResponse: {
           doc: "Selects the next tab for the request in main view.",

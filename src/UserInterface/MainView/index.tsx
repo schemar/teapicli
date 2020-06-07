@@ -19,16 +19,13 @@ const MainView: FunctionComponent<{
   configuration: Configuration;
   client: string;
 }> = ({ configuration, client }) => {
-  const { commandsStore, collectionStore, viewsStore } = useStore();
+  const { commandsStore, collectionStore } = useStore();
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [startTime, setStartTime] = useState<[number, number]>();
 
   useEffect(() => {
     const commands = {
-      close: () => {
-        viewsStore.popView();
-      },
       send: () => {
         if (collectionStore.selectedRequest instanceof Request) {
           setLoading(true);

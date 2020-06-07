@@ -9,6 +9,7 @@ import Collections from "../Collections";
 import FullScreen from "./FullScreen";
 
 import StatusBarComponent from "./StatusBarComponent";
+import MessagesComponent from "./MessagesComponent";
 import MainView from "./MainView";
 import Pager from "./Pager";
 import Selector from "./Selector";
@@ -32,6 +33,12 @@ const UserInterface: FunctionComponent<{
 
   useEffect(() => {
     const commands = {
+      close: () => {
+        viewsStore.popView();
+      },
+      listMessages: () => {
+        viewsStore.pushView(View.Messages);
+      },
       showResponse: () => {
         if (collectionStore.lastResponse !== undefined) {
           viewsStore.pushView(View.ResponsePager);
@@ -99,6 +106,9 @@ const UserInterface: FunctionComponent<{
               selectedItem={collectionStore.selectedEnvironment?.name}
               onSelect={onEnvironmentSelect}
             />
+          )}
+          {viewsStore.activeView === View.Messages && (
+            <MessagesComponent width={columns} height={rows - 1} />
           )}
           <StatusBarComponent width={columns} configuration={configuration} />
         </Box>

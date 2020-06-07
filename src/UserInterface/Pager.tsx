@@ -8,7 +8,7 @@ const Pager: FunctionComponent<{
   height: number;
   content: string;
 }> = ({ width, height, content }) => {
-  const { commandsStore, viewsStore } = useStore();
+  const { commandsStore } = useStore();
   const [lines, setLines] = useState<string[]>([]);
 
   useEffect(() => {
@@ -30,9 +30,6 @@ const Pager: FunctionComponent<{
   const [pointer, setPointer] = useState<number>(0);
   useEffect(() => {
     const commands = {
-      close: () => {
-        viewsStore.popView();
-      },
       down: () => {
         setPointer(Math.min(lines.length - 1, pointer + 1));
       },
@@ -44,7 +41,7 @@ const Pager: FunctionComponent<{
     return () => {
       commandsStore.unregisterCommands(commands);
     };
-  });
+  }, []);
 
   return (
     <Box width="100%" height="100%" flexDirection="column">

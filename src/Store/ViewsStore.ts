@@ -1,10 +1,11 @@
 import { action, computed, observable } from "mobx";
 
 export enum View {
+  EnvironmentSelector,
   Main,
+  Messages,
   ResponsePager,
   RequestSelector,
-  EnvironmentSelector,
 }
 
 export default class ViewsStore {
@@ -12,6 +13,10 @@ export default class ViewsStore {
 
   @action
   pushView(view: View): void {
+    // Remove previous existances. Every view must only be on the stack once.
+    this.viewStack = this.viewStack.filter(
+      (viewOnStack) => viewOnStack !== view
+    );
     this.viewStack.push(view);
   }
 
