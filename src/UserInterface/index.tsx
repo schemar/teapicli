@@ -2,7 +2,9 @@ import React, { FunctionComponent, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { Box, useApp } from "ink";
 import useStdoutDimensions from "ink-use-stdout-dimensions";
+import { highlight } from "cli-highlight";
 import Configuration from "../Configuration";
+import { showPager } from "../Shell/commands";
 import { useStore, StoreProvider } from "../Store";
 import { View } from "../Store/ViewsStore";
 import Collections from "../Collections";
@@ -11,7 +13,6 @@ import FullScreen from "./FullScreen";
 import StatusBarComponent from "./StatusBarComponent";
 import MessagesComponent from "./MessagesComponent";
 import MainView from "./MainView";
-import Pager from "./Pager";
 import Selector from "./Selector";
 
 const UserInterface: FunctionComponent<{
@@ -41,7 +42,9 @@ const UserInterface: FunctionComponent<{
       },
       showResponse: () => {
         if (collectionStore.lastResponse !== undefined) {
-          viewsStore.pushView(View.ResponsePager);
+          showPager(highlight(collectionStore.lastResponse.body));
+          // Force re-render:
+          collectionStore.setCollection(collectionStore.collection);
         }
       },
       selectRequest: () => {
@@ -83,13 +86,6 @@ const UserInterface: FunctionComponent<{
         <Box width={columns} height={rows - 1} flexDirection="column">
           {viewsStore.activeView === View.Main && (
             <MainView configuration={configuration} client={program.client} />
-          )}
-          {viewsStore.activeView === View.ResponsePager && (
-            <Pager
-              content={collectionStore.lastResponse!.body}
-              width={columns}
-              height={rows - 2}
-            />
           )}
           {viewsStore.activeView === View.RequestSelector && (
             <Selector

@@ -4,7 +4,6 @@ export enum View {
   EnvironmentSelector,
   Main,
   Messages,
-  ResponsePager,
   RequestSelector,
 }
 

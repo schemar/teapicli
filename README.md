@@ -20,7 +20,6 @@ Basic usage:
 teapicli ./my-collection.json
 ```
 
-If you start teapicli with `yarn start`, it will use the examples provided with this repo.
 You can check [`./examples/collection.json`](./examples/collection.json).
 The collection file defines the requests you will be able to make from within teapicli.
 
@@ -44,7 +43,6 @@ Example call:
 | View | Explanation |
 | ---- | ----------- |
 | Main view | The app opens in the main view. Here you see the collection and can send requests. |
-| Pager | The pager shows content in a scrollable buffer. Could, for example, show a long response body. |
 | Selector | In the selector you can select an item. For example, when you want to change the selected request of the collection, the selector will open with a list of all requests to select one from. |
 | Messages | Lists all messages (including errors and warnings) that teapicli put out. |
 
@@ -58,13 +56,11 @@ Example call:
 | Main view | `s` | `send` | Send the currently selected request. |
 | Main view | `g` | `nextTabRequest` | Switch tabs (body, headers) to inspect request. |
 | Main view | `h` | `nextTabResponse` | Switch tabs (body, headers) to inspect response. |
-| Main view | `p` | `showResponse` | Display the entire response body in a scrollable pager. |
+| Main view | `p` | `showResponse` | Display the body of the last response in `$PAGER`. |
 | Main view | `r` | `selectRequst` | Open the selector to select another request of the collection. |
 | Main view | `v` | `selectEnvironment` | Open the selector to select another environment of the collection. |
 | Main view | `e` | `edit` | Edit the collection in your `$EDITOR`. Make sure to persist with `w` if you want to keep the changes. |
 | Main view | `w` | `write` | Persist the current state of the collection to disk. |
-| Pager     | `j` | `down` | Scroll down one line. |
-| Pager     | `k` | `up` | Scroll up one line. |
 | Selector  | `j` | `down` | Move pointer one line down. |
 | Selector  | `k` | `up` | Move pointer one line up. |
 | Selector  | `s` | `select` | Select item under the current pointer, e.g. the request, and close the selector. |

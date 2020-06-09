@@ -1,9 +1,8 @@
-import { execSync } from "child_process";
-import fs from "fs";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Box } from "ink";
 import Configuration from "../../Configuration";
+import { editCollection } from "../../Shell/commands";
 import { useStore } from "../../Store";
 import CollectionComponent from "./CollectionComponent";
 import EnvironmentsComponent from "./EnvironmentsComponent";
@@ -12,7 +11,6 @@ import SelectedRequestComponent from "./SelectedRequestComponent";
 import ResponseComponent from "./ResponseComponent";
 import Clients from "../../Clients";
 import Collections from "../../Collections";
-import Collection from "../../Collections/Collection";
 import Request from "../../Collections/Request";
 
 const MainView: FunctionComponent<{
@@ -43,42 +41,10 @@ const MainView: FunctionComponent<{
       edit: () => {
         const { collection } = collectionStore;
         if (collection !== undefined) {
-          // Make sure the temporary path exists:
-          const tempDir = `${execSync('dirname "$(mktemp -u)"')
-            .toString("utf-8")
-            .replace(/(\n|\r)+$/, "")}/teapicli`;
-          execSync(`mkdir -p ${tempDir}`);
-
-          // Store a copy of the collection in a temp path:
-          const tempPath = `${tempDir}/collection_${process.pid.toString(
-            10
-          )}.json`;
-          const copy = new Collection({ ...collection, path: tempPath });
-          Collections.write({
-            collection: copy,
-            exporterName: configuration.get("exporter"),
-          });
-
-          // Edit the temporary copy:
-          const editor = process.env.EDITOR ?? "vi";
-          execSync(`${editor} ${tempPath}`, { stdio: "inherit" });
-
-          // Update the collection from the temporary copy:
-          const updatedCollection = Collections.read({
-            filePath: tempPath,
-            importerName: configuration.get("importer"),
-          });
-
+          const updatedCollection = editCollection(collection, configuration);
           if (updatedCollection !== undefined) {
-            const updatedCollectionWithOriginalPath = new Collection({
-              ...updatedCollection,
-              path: collection.path,
-            });
-            collectionStore.setCollection(updatedCollectionWithOriginalPath);
+            collectionStore.setCollection(updatedCollection);
           }
-
-          // Delete the temporary copy:
-          fs.unlinkSync(tempPath);
         }
       },
       write: () => {
