@@ -3,7 +3,7 @@ import { Box, Color } from "ink";
 import { useStore } from "../Store";
 
 const Tab: FunctionComponent<{ name: string }> = ({ children }) => {
-  return <>{children}</>;
+  return <Box>{children}</Box>;
 };
 
 const Tabs: FunctionComponent<{
@@ -35,9 +35,7 @@ const Tabs: FunctionComponent<{
           return (
             <Box>
               {index > 0 && " | "}
-              <Color white={activeTab !== index} green={activeTab === index}>
-                {child?.props.name}
-              </Color>
+              <Color green={activeTab === index}>{child?.props.name}</Color>
             </Box>
           );
         })}
