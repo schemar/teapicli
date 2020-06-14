@@ -18,13 +18,31 @@ export default class CollectionStore {
     this.collection = collection;
 
     if (collection && collection.environments.length > 0) {
-      [this.selectedEnvironment] = collection.environments;
+      // Only set a new environment, if the old one cannot be matched:
+      const matchingEnvironment = collection.environments.find(
+        (collectionEnvironment) =>
+          collectionEnvironment.name === this.selectedEnvironment?.name
+      );
+      if (matchingEnvironment !== undefined) {
+        this.selectedEnvironment = matchingEnvironment;
+      } else {
+        [this.selectedEnvironment] = collection.environments;
+      }
     } else {
       this.selectedEnvironment = undefined;
     }
 
     if (collection && collection.requests.length > 0) {
-      [this.selectedRequest] = collection.requests;
+      // Only set a new request, if the old one cannot be matched:
+      const matchingRequest = collection.requests.find(
+        (collectionRequest) =>
+          collectionRequest.name === this.selectedRequest?.name
+      );
+      if (matchingRequest !== undefined) {
+        this.selectedRequest = matchingRequest;
+      } else {
+        [this.selectedRequest] = collection.requests;
+      }
     } else {
       this.selectedRequest = undefined;
     }
