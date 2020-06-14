@@ -6,7 +6,6 @@ import Configuration from "../Configuration";
 import { useStore, StoreProvider } from "../Store";
 import { View } from "../Store/ViewsStore";
 import Collections from "../Collections";
-import FullScreen from "./FullScreen";
 
 import StatusBarComponent from "./StatusBarComponent";
 import MessagesComponent from "./MessagesComponent";
@@ -62,35 +61,33 @@ const UserInterface: FunctionComponent<{
   };
 
   return (
-    <FullScreen>
-      <StoreProvider>
-        <Box width={columns} height={rows - 1} flexDirection="column">
-          {viewsStore.activeView === View.Main && (
-            <MainView configuration={configuration} client={program.client} />
-          )}
-          {viewsStore.activeView === View.RequestSelector && (
-            <Selector
-              height={rows}
-              items={collectionStore.collection!.requests}
-              selectedItem={collectionStore.selectedRequest?.name}
-              onSelect={onRequestSelect}
-            />
-          )}
-          {viewsStore.activeView === View.EnvironmentSelector && (
-            <Selector
-              height={rows}
-              items={collectionStore.collection!.environments}
-              selectedItem={collectionStore.selectedEnvironment?.name}
-              onSelect={onEnvironmentSelect}
-            />
-          )}
-          {viewsStore.activeView === View.Messages && (
-            <MessagesComponent width={columns} height={rows - 1} />
-          )}
-          <StatusBarComponent width={columns} configuration={configuration} />
-        </Box>
-      </StoreProvider>
-    </FullScreen>
+    <StoreProvider>
+      <Box width={columns} height={rows - 1} flexDirection="column">
+        {viewsStore.activeView === View.Main && (
+          <MainView configuration={configuration} client={program.client} />
+        )}
+        {viewsStore.activeView === View.RequestSelector && (
+          <Selector
+            height={rows}
+            items={collectionStore.collection!.requests}
+            selectedItem={collectionStore.selectedRequest?.name}
+            onSelect={onRequestSelect}
+          />
+        )}
+        {viewsStore.activeView === View.EnvironmentSelector && (
+          <Selector
+            height={rows}
+            items={collectionStore.collection!.environments}
+            selectedItem={collectionStore.selectedEnvironment?.name}
+            onSelect={onEnvironmentSelect}
+          />
+        )}
+        {viewsStore.activeView === View.Messages && (
+          <MessagesComponent width={columns} height={rows - 1} />
+        )}
+        <StatusBarComponent width={columns} configuration={configuration} />
+      </Box>
+    </StoreProvider>
   );
 };
 

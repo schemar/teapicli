@@ -44,8 +44,6 @@ const MainView: FunctionComponent<{
       showResponse: () => {
         if (collectionStore.lastResponse !== undefined) {
           showPager(highlight(collectionStore.lastResponse.body));
-          // Force re-render:
-          collectionStore.setCollection(collectionStore.collection);
         }
       },
       selectRequest: () => {
