@@ -12,6 +12,24 @@ Install as a global npm package:
 npm install -g teapicli
 ```
 
+Teapicli is changing rapidly at the moment.
+In order to get the latest version from `master`:
+
+```sh
+git clone git@github.com:schemar/teapicli.git
+cd teapicli
+yarn
+yarn link
+yarn build
+
+# Run with node:
+node ./dist/cli.js
+
+# Alternatively, link from $PATH, e.g.:
+chmod u+x ./dist/cli.js
+ln -s $(pwd)/dist/cli.js /usr/local/bin/teapicli
+```
+
 ## Usage
 
 Basic usage:
