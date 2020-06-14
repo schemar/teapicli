@@ -19,7 +19,6 @@ In order to get the latest version from `master`:
 git clone git@github.com:schemar/teapicli.git
 cd teapicli
 yarn
-yarn link
 yarn build
 
 # Run with node:
