@@ -1,9 +1,12 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Box } from "ink";
+import { highlight } from "cli-highlight";
 import Configuration from "../../Configuration";
-import { editCollection } from "../../Shell/commands";
+import { showPager, editCollection } from "../../Shell/commands";
+
 import { useStore } from "../../Store";
+import { View } from "../../Store/ViewsStore";
 import CollectionComponent from "./CollectionComponent";
 import EnvironmentsComponent from "./EnvironmentsComponent";
 import RequestsComponent from "./RequestsComponent";
@@ -17,7 +20,7 @@ const MainView: FunctionComponent<{
   configuration: Configuration;
   client: string;
 }> = ({ configuration, client }) => {
-  const { commandsStore, collectionStore } = useStore();
+  const { commandsStore, collectionStore, viewsStore } = useStore();
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [startTime, setStartTime] = useState<[number, number]>();
@@ -36,6 +39,23 @@ const MainView: FunctionComponent<{
             setLoading(false);
             collectionStore.addResponse(response);
           });
+        }
+      },
+      showResponse: () => {
+        if (collectionStore.lastResponse !== undefined) {
+          showPager(highlight(collectionStore.lastResponse.body));
+          // Force re-render:
+          collectionStore.setCollection(collectionStore.collection);
+        }
+      },
+      selectRequest: () => {
+        if (collectionStore.hasRequests) {
+          viewsStore.pushView(View.RequestSelector);
+        }
+      },
+      selectEnvironment: () => {
+        if (collectionStore.hasEnvironments) {
+          viewsStore.pushView(View.EnvironmentSelector);
         }
       },
       edit: () => {

@@ -2,9 +2,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { Box, useApp } from "ink";
 import useStdoutDimensions from "ink-use-stdout-dimensions";
-import { highlight } from "cli-highlight";
 import Configuration from "../Configuration";
-import { showPager } from "../Shell/commands";
 import { useStore, StoreProvider } from "../Store";
 import { View } from "../Store/ViewsStore";
 import Collections from "../Collections";
@@ -39,23 +37,6 @@ const UserInterface: FunctionComponent<{
       },
       listMessages: () => {
         viewsStore.pushView(View.Messages);
-      },
-      showResponse: () => {
-        if (collectionStore.lastResponse !== undefined) {
-          showPager(highlight(collectionStore.lastResponse.body));
-          // Force re-render:
-          collectionStore.setCollection(collectionStore.collection);
-        }
-      },
-      selectRequest: () => {
-        if (collectionStore.hasRequests) {
-          viewsStore.pushView(View.RequestSelector);
-        }
-      },
-      selectEnvironment: () => {
-        if (collectionStore.hasEnvironments) {
-          viewsStore.pushView(View.EnvironmentSelector);
-        }
       },
     };
 
