@@ -69,6 +69,7 @@ Example call:
 | ---- | --- | ------- | ------ |
 | All views | `:` | `command` | Type out a command by its name (names from this table). |
 | All views | `q` | `close` | Close the current view and return to the previous view on the stack. When the last view is closed, the application exits. |
+| All views | `?` | `close` | Display all commands that are available in the current view (in `$PAGER`). |
 | All views | `m` | `listMessages` | Open the messages view that lists previous messages. |
 | Main view | `s` | `send` | Send the currently selected request. |
 | Main view | `g` | `nextTabRequest` | Switch tabs (body, headers) to inspect request. |

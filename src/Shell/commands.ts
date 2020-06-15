@@ -27,7 +27,7 @@ const showPager = (content: string) => {
   execSync(`mkdir -p ${tempDir}`);
 
   // Store a copy of the response in a temp path:
-  const tempPath = `${tempDir}/response_${process.pid.toString(10)}`;
+  const tempPath = `${tempDir}/pager_${process.pid.toString(10)}`;
   fs.writeFileSync(tempPath, content);
   const pager = process.env.PAGER ?? "less";
   execSync(`${pager} ${tempPath}`, { stdio: "inherit" });

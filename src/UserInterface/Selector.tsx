@@ -23,10 +23,10 @@ const Selector: FunctionComponent<{
 
   useEffect(() => {
     const commands = {
-      down: () => {
+      scrollDown: () => {
         setPointer(Math.min(items.length - 1, pointer + 1));
       },
-      up: () => {
+      scrollUp: () => {
         setPointer(Math.max(0, pointer - 1));
       },
       select: () => {
