@@ -24,8 +24,6 @@ impl Default for EventConfig {
 pub enum Event<I> {
     /// An input event occurred.
     Input(I),
-    /// An tick event occurred.
-    Tick,
 }
 
 /// A small event handler that wrap crossterm input and tick event. Each event
@@ -61,7 +59,7 @@ impl Events {
                     }
                 }
 
-                event_tx.send(Event::Tick).unwrap();
+                event_tx.send(Event::Input(Key::None)).unwrap();
             }
         });
 

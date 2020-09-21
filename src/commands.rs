@@ -3,7 +3,7 @@ use crate::state;
 use std::collections::HashMap;
 
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-enum CommandName {
+pub enum CommandName {
     Open,
     Close,
 }
@@ -14,61 +14,54 @@ pub struct Command {
     description: String,
 }
 
-pub struct Commands(HashMap<state::State, HashMap<CommandName, Command>>);
+/// Maps states to a list of their available commands.
+pub struct Commands(HashMap<state::State, Vec<Command>>);
 
 impl Commands {
-    // TODO: keys should be configurable
+    // TODO: keys should be configurable/read from file
     pub fn new() -> Commands {
         let mut commands = HashMap::new();
 
-        let mut main_commands = HashMap::new();
-
-        let open_command = Command {
-            name: CommandName::Open,
-            key: Key::Char('o'),
-            description: "Test command to push to the stack".to_string(),
-        };
-        insert_command(&mut main_commands, open_command);
-
-        let close_command = Command {
-            name: CommandName::Close,
-            key: Key::Char('q'),
-            description: "Test command to pop from the stack".to_string(),
-        };
-        insert_command(&mut main_commands, close_command);
+        let main_commands = vec![
+            Command {
+                name: CommandName::Open,
+                key: Key::Char('o'),
+                description: "Test command to push to the stack".to_string(),
+            },
+            Command {
+                name: CommandName::Close,
+                key: Key::Char('q'),
+                description: "Test command to pop from the stack".to_string(),
+            },
+        ];
 
         commands.insert(state::State::Main, main_commands);
 
         Commands { 0: commands }
     }
 
-    pub fn get_command(&self, state_machine: &state::Machine, key: Key) -> Option<&Command> {
-        if let Some(state) = state_machine.get_state() {
-            if let Some(commands) = self.0.get(state) {
-                for (name, command) in commands {
-                    if command.key == key {
-                        return Some(command);
-                    }
-                }
+    pub fn get_commands(&self, state: state::State) -> &Vec<Command> {
+        match self.0.get(&state) {
+            Some(commands) => commands,
+            // TODO: better handling though a view without commands should never exist
+            None => panic!("nope"),
+        }
+    }
+
+    pub fn get_command<'a>(&self, commands: &'a [Command], key: Key) -> Option<&'a Command> {
+        for command in commands {
+            if command.key == key {
+                return Some(command);
             }
         }
 
         None
     }
+}
 
-    pub fn update_state(&self, state_machine: &mut state::Machine, command: &Command) {
-        if let Some(state) = state_machine.get_state() {
-            match state {
-                state::State::Main => match command.name {
-                    CommandName::Open => {
-                        state_machine.push(state::State::Main);
-                    }
-                    CommandName::Close => {
-                        state_machine.pop();
-                    }
-                },
-            }
-        }
+impl Command {
+    pub fn name(&self) -> &CommandName {
+        &self.name
     }
 }
 
