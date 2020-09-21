@@ -1,4 +1,4 @@
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum State {
     Main,
 }
@@ -14,6 +14,14 @@ impl Machine {
         }
     }
 
+    pub fn get_state(&self) -> Option<&State> {
+        if self.stack.len() > 0 {
+            return Some(&self.stack[self.stack.len() - 1]);
+        }
+
+        None
+    }
+
     pub fn push(&mut self, state: State) -> &Machine {
         self.stack.push(state);
         self
@@ -25,14 +33,6 @@ impl Machine {
             self.stack.truncate(self.stack.len() - 1);
 
             return Some(current_state);
-        }
-
-        None
-    }
-
-    pub fn current_state(&self) -> Option<State> {
-        if self.stack.len() > 0 {
-            return Some(self.stack[self.stack.len() - 1]);
         }
 
         None

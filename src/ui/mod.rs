@@ -1,3 +1,1 @@
-mod main;
-
-pub use self::main::MainView;
+pub mod main_view;
