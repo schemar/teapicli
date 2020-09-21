@@ -25,8 +25,7 @@ fn main() -> Result<(), io::Error> {
     let key_events = event::Events::new(timeout);
 
     let mut state_machine = state::Machine::new();
-    let commands = commands::Commands::new();
-    let main_view = view::Main::new(commands.get_commands(state::State::Main));
+    let main_view = view::Main::new();
 
     loop {
         let key;
@@ -49,9 +48,8 @@ fn main() -> Result<(), io::Error> {
                 let size = terminal.size().unwrap();
                 match state {
                     state::State::Main => {
-                        if let Some(command) = commands.get_command(main_view.commands(), key) {
-                            main_view.execute(command, &mut state_machine);
-                        }
+                        // TODO: implement "show" help for every view or centrally?
+                        main_view.execute(&key, &mut state_machine);
                         main_view.draw(&mut terminal, size);
                     }
                 };

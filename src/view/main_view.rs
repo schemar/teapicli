@@ -1,5 +1,7 @@
 use crate::commands::{Command, CommandName};
+use crate::event::Key;
 use crate::state;
+use std::collections::HashMap;
 use std::io;
 use tui::backend::CrosstermBackend;
 use tui::layout::{Constraint, Direction, Layout, Rect};
@@ -7,17 +9,30 @@ use tui::style::{Color, Style};
 use tui::widgets::{Block, Borders};
 use tui::Terminal;
 
-pub struct Main<'a> {
-    commands: &'a Vec<Command>,
+pub struct Main {
+    commands: HashMap<Key, Command>,
 }
 
-impl<'a> Main<'a> {
-    pub fn new(commands: &Vec<Command>) -> Main {
-        Main { commands }
-    }
+impl Main {
+    pub fn new() -> Main {
+        // TODO: configurable with config file?
+        let mut commands = HashMap::new();
+        commands.insert(
+            Key::Char('o'),
+            Command {
+                name: CommandName::Open,
+                description: "Test command to push to the stack".to_string(),
+            },
+        );
+        commands.insert(
+            Key::Char('q'),
+            Command {
+                name: CommandName::Close,
+                description: "Test command to pop from the stack".to_string(),
+            },
+        );
 
-    pub fn commands(&self) -> &Vec<Command> {
-        self.commands
+        Main { commands }
     }
 
     pub fn draw(
@@ -48,13 +63,15 @@ impl<'a> Main<'a> {
         })
     }
 
-    pub fn execute(&self, command: &Command, state_machine: &mut state::Machine) {
-        match command.name() {
-            CommandName::Open => {
-                state_machine.push(state::State::Main);
-            }
-            CommandName::Close => {
-                state_machine.pop();
+    pub fn execute(&self, key: &Key, state_machine: &mut state::Machine) {
+        if let Some(command) = self.commands.get(key) {
+            match command.name {
+                CommandName::Open => {
+                    state_machine.push(state::State::Main);
+                }
+                CommandName::Close => {
+                    state_machine.pop();
+                }
             }
         }
     }
