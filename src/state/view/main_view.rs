@@ -1,6 +1,6 @@
-use crate::commands::{Command, CommandName};
-use crate::event::Key;
-use crate::state;
+use crate::state::commands::{Command, CommandName};
+use crate::state::event::Key;
+use crate::state::View;
 use std::collections::HashMap;
 use std::io;
 use tui::backend::CrosstermBackend;
@@ -34,8 +34,10 @@ impl Main {
 
         Main { commands }
     }
+}
 
-    pub fn draw(
+impl View for Main {
+    fn draw(
         &self,
         terminal: &mut Terminal<CrosstermBackend<io::Stdout>>,
         area: Rect,
@@ -62,17 +64,7 @@ impl Main {
             terminal.render_widget(input_block, vertical_chunks[1]);
         })
     }
-
-    pub fn execute(&self, key: &Key, state_machine: &mut state::Machine) {
-        if let Some(command) = self.commands.get(key) {
-            match command.name {
-                CommandName::Open => {
-                    state_machine.push(state::State::Main);
-                }
-                CommandName::Close => {
-                    state_machine.pop();
-                }
-            }
-        }
+    fn get_command(&self, key: &Key) -> Option<&Command> {
+        self.commands.get(key)
     }
 }
