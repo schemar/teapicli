@@ -1,5 +1,7 @@
+mod event;
 mod runner;
 mod state;
+mod view;
 
 use crossterm::{
     event::{DisableMouseCapture, EnableMouseCapture},
@@ -8,6 +10,7 @@ use crossterm::{
 };
 use std::io::{self, Write};
 use tui::backend::CrosstermBackend;
+use tui::Terminal;
 
 fn main() -> Result<(), io::Error> {
     // TODO: error handling
@@ -16,10 +19,14 @@ fn main() -> Result<(), io::Error> {
     enable_raw_mode();
 
     let backend = CrosstermBackend::new(stdout);
+    let mut terminal = Terminal::new(backend)?;
+    terminal.hide_cursor()?;
 
-    runner::run(backend);
+    // This blocks until the application exits
+    runner::run(&mut terminal)?;
 
     // TODO: panic handler
+    terminal.show_cursor()?;
     disable_raw_mode();
     let mut stdout = io::stdout();
     execute!(stdout, LeaveAlternateScreen, DisableMouseCapture);
