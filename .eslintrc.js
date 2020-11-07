@@ -23,6 +23,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier', 'jest'],
   rules: {
     'import/export': 'off',
+    'import/prefer-default-export': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',

@@ -1,9 +1,9 @@
 #!/bin/env node
 
-import React from 'react';
-import { render } from 'ink';
+import React from "react";
+import { render } from "ink";
 
-import { App } from './App';
+import { App } from "./App";
 
 const enterAltScreenCommand = "\x1b[?1049h";
 const leaveAltScreenCommand = "\x1b[?1049l";
