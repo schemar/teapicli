@@ -30,7 +30,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "chalk": "^4.0.0",
-    "cli-highlight": "^2.1.4",
+    "cli-highlight": "^2.1.11",
     "commander": "^5.1.0",
     "convict": "^6.0.0",
     "http-status-codes": "^1.4.0",
